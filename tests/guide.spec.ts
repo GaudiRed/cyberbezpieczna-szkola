@@ -94,7 +94,7 @@ test('Raport do PDF zawiera wymagania KSC i funkcje Google bez elementów nawiga
   await expect(page.locator('.print-source')).toContainText('Data i godzina wydruku:');
   await expect(page.locator('.print-source')).toContainText(new URL(page.url()).origin);
   await expect(page.locator('.audit .print-report')).toContainText('Po stronie szkoły:');
-  await expect(page.locator('.audit .print-report')).toContainText('zaszyfrowanym nośniku odłączanym od komputera');
+  await expect(page.locator('.audit .print-report')).toContainText('zaszyfrowanym nośniku odłączonym od sieci');
   const pdf = await page.pdf({ path: testInfo.outputPath('przykladowy-raport.pdf'), format: 'A4', printBackground: true, preferCSSPageSize: true });
   expect(pdf.byteLength).toBeGreaterThan(10_000);
 });
