@@ -2,6 +2,7 @@
  import { annexRequirements, matchedFeatures, LEGAL_SOURCE, ANNEX_PDF, MINISTRY_FAQ, type Requirement } from '$lib/requirements';
  import type { Feature } from '$lib/content';
  import { practicalAdvice } from '$lib/practicalAdvice';
+ import { googleBridges } from '$lib/googleBridges';
  export let answers: Record<string,string> = {};
  export let updateAnswer: (id:string, value:string)=>void;
  let area='Wszystkie';
@@ -107,28 +108,37 @@
     {/if}
     {#if selected.point===10}
       <section class="backup-workarounds" aria-label="Warianty tworzenia kopii zapasowych z pomocą Google">
-        <h3>Trzy sposoby na rozpoczęcie tworzenia kopii</h3>
+        <h3>Jak zacząć z Google? Trzy warianty</h3>
         <div class="backup-grid">
           <article>
-            <span>START · eksporter Workspace</span>
-            <h4>Eksport i kopia offline</h4>
-            <p>Uruchom pełny eksport w konsoli administratora, pobierz archiwum, zapisz je na zaszyfrowanym odłączanym nośniku i przechowuj w oddzielnym, zabezpieczonym miejscu.</p>
-            <a href="https://knowledge.workspace.google.com/admin/migrate/export-all-your-organizations-data" target="_blank" rel="noopener noreferrer">Jak uruchomić eksport ↗</a>
+            <span>WARIANT MINIMUM · WORKSPACE</span>
+            <h4>Eksport + kopia odłączona od sieci</h4>
+            <p>Administrator uruchamia pełny eksport organizacji. Po zakończeniu pobiera archiwum i zapisuje je na szyfrowanym nośniku przechowywanym osobno. Niezbędny jest też test otwarcia kopii.</p>
+            <a href="https://knowledge.workspace.google.com/admin/migrate/export-all-your-organizations-data" target="_blank" rel="noopener noreferrer">Instrukcja Google Data Export ↗</a>
           </article>
           <article>
-            <span>ROZSZERZENIE · Google Cloud</span>
-            <h4>Chronione archiwum w Cloud Storage</h4>
-            <p>Wydziel zasób Cloud Storage z osobnymi uprawnieniami. Rozważ retencję, soft delete i ochronę przed usunięciem. To usługa wymagająca konfiguracji i zwykle płatna.</p>
-            <a href="https://docs.cloud.google.com/storage/docs/protection-backup-recovery-overview" target="_blank" rel="noopener noreferrer">Mechanizmy ochrony Cloud Storage ↗</a>
+            <span>ROZSZERZENIE · GOOGLE CLOUD</span>
+            <h4>Odrębne archiwum w Cloud Storage</h4>
+            <p>Pobrane archiwum można zapisać w osobnym projekcie Cloud Storage z oddzielnymi uprawnieniami i retencją. Sam inny zasobnik nie dowodzi jednak separacji fizycznej i logicznej.</p>
+            <a href="https://docs.cloud.google.com/storage/docs/protection-backup-recovery-overview" target="_blank" rel="noopener noreferrer">Ochrona danych w Cloud Storage ↗</a>
           </article>
           <article>
-            <span>DOCELOWO · wdrożenie z partnerem</span>
-            <h4>Regularny backup i odzyskiwanie</h4>
-            <p>Partner pomoże dobrać narzędzie do cyklicznych kopii danych, ustalić separację dostępów oraz przećwiczyć przywracanie plików lub usług.</p>
-            <a href="#partnerzy">Kontakty partnerów Google for Education ↓</a>
+            <span>DOCELOWO · STAŁA OCHRONA</span>
+            <h4>Regularne kopie i łatwe odtwarzanie</h4>
+            <p>Gdy pliki zmieniają się codziennie, wdroż odrębny system automatycznych kopii i testów odtwarzania. Partner Google for Education pomoże dobrać zakres i sposób separacji.</p>
+            <a href="#partnerzy">Kontakt z partnerem ↗</a>
           </article>
         </div>
-        <p class="backup-caution"><strong>Ważne:</strong> eksport Workspace nie jest automatycznym backupem i nie gwarantuje szybkiego przywrócenia usług. W standardowym eksporcie dane na tymczasowym zasobie Google są usuwane po 60 dniach od rozpoczęcia eksportu, dlatego trzeba je pobrać. Vault ani historia wersji na Dysku nie zastępują kopii odseparowanych. O spełnieniu wymagania decydują również rzeczywista separacja i test odzyskiwania.</p>
+        <p class="backup-caution"><strong>Granice rozwiązania:</strong> pełny eksport standardowej edycji Workspace można uruchamiać co 30 dni, a tymczasowe archiwum Google jest usuwane po 60 dniach od rozpoczęcia eksportu. Eksport nie jest backupem ciągłym ani automatycznym przywracaniem usług. Własny zasobnik eksportu jest funkcją zależną od dodatkowych licencji Assured Controls; bez nich archiwum pobiera się z zasobnika tymczasowego i przenosi osobno. <a href="https://knowledge.workspace.google.com/admin/migrate/choose-the-workspace-data-you-want-to-export" target="_blank" rel="noopener noreferrer">Szczegóły edycji i limitów ↗</a></p>
+        <p class="backup-law"><strong>Jak rozumieć separację?</strong> Ministerstwo Cyfryzacji (FAQ, pyt. 3.41) wyjaśnia, że nie ma ogólnego obowiązku trzymania kopii w osobnym budynku. Muszą one być zabezpieczone przed tymi samymi zagrożeniami co dane produkcyjne, z zachowaniem separacji logicznej i fizycznej. <a href="https://www.gov.pl/attachment/c19a078f-60ca-49ab-ac19-f743f8f64903#page=76" target="_blank" rel="noopener noreferrer">Odpowiedź Ministerstwa Cyfryzacji ↗</a></p>
+      </section>
+    {:else if googleBridges[selected.id]}
+      <section class="google-bridge" aria-label="Prosty wariant z użyciem Google">
+        <div class="bridge-tag">Prosty wariant z Google</div>
+        <h3>{googleBridges[selected.id].title}</h3>
+        <p><strong>Co zrobić w Google:</strong> {googleBridges[selected.id].use}</p>
+        <p><strong>Co jeszcze jest potrzebne:</strong> {googleBridges[selected.id].outside}</p>
+        <a href={googleBridges[selected.id].guideUrl} target="_blank" rel="noopener noreferrer">{googleBridges[selected.id].guide} ↗</a>
       </section>
     {/if}
     {#if selected.point===17}
@@ -197,4 +207,12 @@
 .backup-grid a{font-size:12px;font-weight:700;margin-top:auto}
 .backup-caution{font-size:12px;line-height:1.55;background:#fff9ec;color:#624b28!important;border-left:3px solid #f9ab00;padding:12px 14px;border-radius:8px;margin:16px 0 0!important}
 @media(max-width:1030px){.backup-grid{grid-template-columns:1fr}}
+
+.google-bridge{margin:17px 0;padding:19px;background:#f3f9f4;border-left:4px solid #34a853;border-radius:12px}
+.google-bridge .bridge-tag{font-weight:800;color:#187a3d;font-size:11px;letter-spacing:.07em}
+.google-bridge h3{margin:8px 0;font-size:17px}
+.google-bridge p{font-size:13px;margin:9px 0;line-height:1.55}
+.google-bridge a{display:inline-block;margin-top:5px;font-size:13px;font-weight:700}
+.backup-law{font-size:12px;background:#fff;border-left:3px solid #4285f4;padding:12px 14px;border-radius:8px}
+.backup-law a,.backup-caution a{font-weight:700}
 </style>

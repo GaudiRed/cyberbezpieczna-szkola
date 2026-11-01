@@ -3,6 +3,7 @@
   import { features, type Feature } from '$lib/content';
   import { annexRequirements, LEGAL_SOURCE, matchedFeatures } from '$lib/requirements';
   import { practicalAdvice } from '$lib/practicalAdvice';
+  import { googleBridges } from '$lib/googleBridges';
 
   export let answers: Record<string, string> = {};
   export let updateAnswer: (id: string, status: string) => void;
@@ -125,6 +126,15 @@
           <ul class="short-actions">{#each practicalAdvice[requirement.id].school as step}<li>{step}</li>{/each}</ul>
         {/if}
         <p><strong>Potwierdzenie wykonania:</strong> {practicalAdvice[requirement.id].proof}</p>
+        {#if requirement.id==='ksc10'}
+          <p><strong>Instrukcja Google Data Export:</strong> https://knowledge.workspace.google.com/admin/migrate/export-all-your-organizations-data</p>
+          <p><strong>Jak rozumieć odseparowanie kopii:</strong> https://www.gov.pl/attachment/c19a078f-60ca-49ab-ac19-f743f8f64903 (FAQ, odpowiedź 3.41)</p>
+          <p><strong>Ważne:</strong> w standardowych edycjach pełny eksport nie częściej niż co 30 dni. Kopie zmieniających się codziennie danych wymagają częstszego, niezależnego backupu.</p>
+        {:else if googleBridges[requirement.id]}
+          <p><strong>Praktyczne wsparcie Google:</strong> {googleBridges[requirement.id].title}</p>
+          <p class="doc-url"><strong>Instrukcja:</strong> {googleBridges[requirement.id].guideUrl}</p>
+          <p><strong>Co pozostaje poza Google:</strong> {googleBridges[requirement.id].outside}</p>
+        {/if}
         {#each matchedFeatures(requirement) as feature}
           <p class="doc-url">{feature.title}: {feature.link}</p>
         {/each}
