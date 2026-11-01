@@ -123,3 +123,22 @@ test('Ograniczenie w matrycy KSC nigdy nie pozostaje bez praktycznej odpowiedzi'
   await list.filter({ hasText: 'Pkt 1' }).click();
   await expect(page.locator('.matrix .details .limitation')).toContainText('Arkuszach Google');
 });
+
+test('Favicon Google oraz kontakty czterech partnerów są dostępne na komputerze i telefonie', async ({ page }) => {
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('.shell')).toHaveAttribute('data-hydrated', 'true');
+  await expect(page.locator('link[rel="icon"]')).toHaveAttribute('href', 'https://www.google.com/favicon.ico');
+  const section = page.locator('#partnerzy');
+  await expect(section).toBeVisible();
+  await expect(section.locator('article.partner-card')).toHaveCount(4);
+  for (const name of ['GoCloud Polska sp. z o.o.', 'CCT Poland', 'MScloud', 'Buena Cloud']) {
+    await expect(section.getByRole('heading', { name })).toBeVisible();
+  }
+  await expect(section.locator('a[href="tel:+48222035551"]')).toBeVisible();
+  await expect(section.locator('a[href="mailto:i.zakharchenko@cctpoland.com"]')).toBeVisible();
+  await expect(section.locator('a[href="https://buenacloud.pl"]')).toBeVisible();
+  await page.getByRole('link', { name: 'Partnerzy', exact: true }).click();
+  await expect(page).toHaveURL(/#partnerzy$/);
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+  expect(overflow).toBeLessThanOrEqual(2);
+});
