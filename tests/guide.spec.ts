@@ -23,7 +23,7 @@ test('Matryca KSC wyszukuje wymaganie, zapisuje status i zachowuje wynik po odś
   await expect(page.locator('.matrix .list button')).toHaveCount(18);
   await page.locator('.matrix .list button').filter({ hasText: 'Pkt 10' }).click();
   await expect(page.getByRole('heading', { name: 'Odseparowane kopie zapasowe' })).toBeVisible();
-  await expect(page.getByText('Google Vault i Historia wersji')).toBeVisible();
+  await expect(page.getByText(/Google Vault nie jest kopią zapasową/)).toBeVisible();
   await page.locator('#requirement-status').selectOption('todo');
   await page.screenshot({ path: testInfo.outputPath('wymaganie-10.png'), fullPage: true });
   await page.reload();
@@ -81,8 +81,8 @@ test('Raport do PDF zawiera wymagania KSC i funkcje Google bez elementów nawiga
   await expect(page.locator('.print-source')).toContainText('Cyberbezpieczna szkoła z Google for Education');
   await expect(page.locator('.print-source')).toContainText('Data i godzina wydruku:');
   await expect(page.locator('.print-source')).toContainText(new URL(page.url()).origin);
-  await expect(page.locator('.audit .print-report')).toContainText('Co zrobić w tej sytuacji:');
-  await expect(page.locator('.audit .print-report')).toContainText('niezależne rozwiązanie kopii zapasowych');
+  await expect(page.locator('.audit .print-report')).toContainText('Po stronie szkoły:');
+  await expect(page.locator('.audit .print-report')).toContainText('niezależne, odseparowane kopie zapasowe');
   const pdf = await page.pdf({ path: testInfo.outputPath('przykladowy-raport.pdf'), format: 'A4', printBackground: true, preferCSSPageSize: true });
   expect(pdf.byteLength).toBeGreaterThan(10_000);
 });
@@ -106,22 +106,37 @@ test('Logo Google for Education ma poprawny wariant na komputerze i telefonie', 
 });
 
 
-test('Ograniczenie w matrycy KSC nigdy nie pozostaje bez praktycznej odpowiedzi', async ({ page }) => {
+test('Wszystkie 18 kart KSC zawiera krótkie zadania i potwierdzenie wykonania', async ({ page }) => {
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await expect(page.locator('.shell')).toHaveAttribute('data-hydrated', 'true');
   await page.getByRole('navigation').getByRole('button', { name: '18 wymagań KSC' }).click();
   const list = page.locator('.matrix .list button');
   await expect(list).toHaveCount(18);
   for (let n = 1; n <= 18; n++) {
-    await list.filter({ hasText: new RegExp('Pkt ' + n + '(\\D|$)') }).click();
-    const solution = page.locator('.matrix .details .limitation');
-    await expect(solution).toContainText('Co zrobić w tej sytuacji?');
-    await expect(solution.locator('p')).toHaveCount(2);
-    const resolution = await solution.locator('p').last().innerText();
-    expect(resolution.trim().length).toBeGreaterThan(65);
+    await list.nth(n-1).click();
+    const actions = page.locator('.matrix .details .quick-actions');
+    await expect(actions).toContainText('Co zrobić? Krótka lista');
+    await expect(actions.locator('.todo-list li').first()).toBeVisible();
+    expect(await actions.locator('.todo-list li').count()).toBeLessThanOrEqual(4);
+    await expect(actions).toContainText('Co zachować jako potwierdzenie?');
   }
-  await list.filter({ hasText: /Pkt 1(?!\d)/ }).click();
-  await expect(page.locator('.matrix .details .limitation')).toContainText('Arkuszach Google');
+  await list.first().click();
+  await expect(page.locator('.matrix .details .quick-actions')).toContainText('Sprawdź listę kont i administratorów');
+  await expect(page.locator('.matrix .details .partner-help')).toContainText('Partnerem Google for Education');
+});
+
+test('Instrukcje zabezpieczeń prowadzą do pomocy technicznej zamiast stron marketingowych', async ({ page }) => {
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('.shell')).toHaveAttribute('data-hydrated', 'true');
+  await page.getByRole('navigation').getByRole('button', { name: 'Zabezpieczenia' }).click();
+  const list = page.locator('.catalog .entries button');
+  await expect(list).toHaveCount(11);
+  for (let n = 0; n < 11; n++) {
+    await list.nth(n).click();
+    const url = await page.getByRole('link', { name: 'Otwórz instrukcję konfiguracji Google' }).getAttribute('href');
+    expect(['support.google.com', 'knowledge.workspace.google.com']).toContain(new URL(url!).hostname);
+    await expect(page.locator('.catalog .detail .feature-actions li').first()).toBeVisible();
+  }
 });
 
 test('Favicon Google oraz kontakty czterech partnerów są dostępne na komputerze i telefonie', async ({ page }) => {
