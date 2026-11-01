@@ -3,7 +3,8 @@ import { test, expect } from '@playwright/test';
 test('Strona startowa i menu działają na ekranie komputera i telefonu', async ({ page }, testInfo) => {
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
-  await page.goto('/', { waitUntil: 'networkidle' });
+  await page.goto('/', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('.shell')).toHaveAttribute('data-hydrated', 'true');
   await expect(page.getByRole('heading', { name: /Bezpieczniejsza szkoła. Prostsze działania./i })).toBeVisible();
   await expect(page.getByRole('navigation', { name: 'Nawigacja główna' })).toBeVisible();
   await page.getByRole('navigation').getByRole('button', { name: 'Źródła i kursy' }).click();
@@ -15,7 +16,8 @@ test('Strona startowa i menu działają na ekranie komputera i telefonu', async 
 });
 
 test('Matryca KSC wyszukuje wymaganie, zapisuje status i zachowuje wynik po odświeżeniu', async ({ page }, testInfo) => {
-  await page.goto('/', { waitUntil: 'networkidle' });
+  await page.goto('/', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('.shell')).toHaveAttribute('data-hydrated', 'true');
   await page.getByRole('navigation').getByRole('button', { name: '18 wymagań KSC' }).click();
   await expect(page.getByRole('heading', { name: '18 wymagań, konkretne działania' })).toBeVisible();
   await expect(page.locator('.matrix .list button')).toHaveCount(18);
@@ -25,6 +27,7 @@ test('Matryca KSC wyszukuje wymaganie, zapisuje status i zachowuje wynik po odś
   await page.locator('#requirement-status').selectOption('todo');
   await page.screenshot({ path: testInfo.outputPath('wymaganie-10.png'), fullPage: true });
   await page.reload();
+  await expect(page.locator('.shell')).toHaveAttribute('data-hydrated', 'true');
   await page.getByRole('navigation').getByRole('button', { name: '18 wymagań KSC' }).click();
   await page.locator('.matrix .list button').filter({ hasText: 'Pkt 10' }).click();
   await expect(page.locator('#requirement-status')).toHaveValue('todo');
@@ -33,7 +36,8 @@ test('Matryca KSC wyszukuje wymaganie, zapisuje status i zachowuje wynik po odś
 });
 
 test('Filtrowanie zabezpieczeń pokazuje spójną kartę i poprawny rodzaj licencji', async ({ page }) => {
-  await page.goto('/', { waitUntil: 'networkidle' });
+  await page.goto('/', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('.shell')).toHaveAttribute('data-hydrated', 'true');
   await page.getByRole('navigation').getByRole('button', { name: 'Zabezpieczenia' }).click();
   await page.getByRole('combobox', { name: 'Dostępność' }).selectOption('plus');
   await expect(page.getByRole('heading', { name: 'Centrum bezpieczeństwa' })).toBeVisible();
@@ -44,7 +48,8 @@ test('Filtrowanie zabezpieczeń pokazuje spójną kartę i poprawny rodzaj licen
 });
 
 test('Quiz ocenia wszystkie odpowiedzi i umożliwia powtórzenie', async ({ page }) => {
-  await page.goto('/', { waitUntil: 'networkidle' });
+  await page.goto('/', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('.shell')).toHaveAttribute('data-hydrated', 'true');
   await page.getByRole('navigation').getByRole('button', { name: 'Quiz' }).click();
   await expect(page.locator('fieldset')).toHaveCount(5);
   const correct = [1, 0, 1, 1, 1];
@@ -59,7 +64,8 @@ test('Quiz ocenia wszystkie odpowiedzi i umożliwia powtórzenie', async ({ page
 
 test('Raport do PDF zawiera wymagania KSC i funkcje Google bez elementów nawigacji', async ({ page }, testInfo) => {
   test.skip(!testInfo.project.name.includes('desktop'), 'PDF generujemy w scenariuszu desktopowym');
-  await page.goto('/', { waitUntil: 'networkidle' });
+  await page.goto('/', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('.shell')).toHaveAttribute('data-hydrated', 'true');
   await page.getByRole('navigation').getByRole('button', { name: '18 wymagań KSC' }).click();
   await page.locator('.matrix .list button').filter({ hasText: 'Pkt 10' }).click();
   await page.locator('#requirement-status').selectOption('todo');
