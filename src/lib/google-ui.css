@@ -1,0 +1,108 @@
+/* Wspólny system wizualny prywatnego prototypu Google for Education. */
+:root {
+  --g-blue: #1a73e8; --g-blue-dark: #174ea6; --g-blue-light: #e8f0fe;
+  --g-green: #188038; --g-green-light: #e6f4ea;
+  --g-yellow: #f9ab00; --g-yellow-light: #fef7e0;
+  --g-red: #d93025; --g-red-light: #fce8e6;
+  --g-ink: #202124; --g-muted: #5f6368; --g-line: #dfe4eb;
+  --g-bg: #f8fafd; --g-white: #fff;
+  --g-shadow: 0 6px 26px rgba(45, 74, 120, .045);
+}
+html { color-scheme: light; scroll-behavior: smooth; }
+body { background: var(--g-bg); color: var(--g-ink); }
+button, input, select { font-family: inherit; }
+a { text-underline-offset: 3px; }
+main a { color: var(--g-blue-dark); }
+main a:hover { text-decoration: underline; }
+main :is(button, a, input, select):focus-visible {
+  outline: 3px solid var(--g-blue);
+  outline-offset: 3px;
+}
+main :is(.matrix,.audit,.scope,.quiz) {
+  max-width: 1190px;
+  color: var(--g-ink);
+}
+main :is(.matrix,.audit,.scope,.quiz) .eyebrow {
+  color: #1967d2; letter-spacing: .12em; font-size: 12px; font-weight: 750;
+}
+main :is(.matrix,.audit,.scope,.quiz) h1 {
+  font-weight: 750; color: var(--g-ink); font-size: clamp(32px,4vw,44px);
+  letter-spacing: -.035em; line-height: 1.17;
+}
+main :is(.matrix,.audit,.scope,.quiz) h2 { color: var(--g-ink); letter-spacing: -.02em; }
+main :is(.matrix,.audit,.scope,.quiz) h3 { color: #303846; }
+main :is(.matrix,.audit,.scope,.quiz) p { color: #556579; }
+main :is(.matrix,.audit,.scope,.quiz) input,
+main :is(.matrix,.audit,.scope,.quiz) select {
+  border: 1px solid #c8d3e1; background: var(--g-white); border-radius: 12px;
+  color: #27364c; font-size: 14px; min-height: 44px;
+}
+main :is(.matrix,.audit,.scope,.quiz) :is(input,select):focus { border-color: var(--g-blue); }
+main :is(.matrix,.audit,.scope,.quiz) :is(.details,.form,.cards article,.checklist,.entries button,.stats>div,.numbers>div,.product,fieldset) {
+  border-color: var(--g-line); box-shadow: var(--g-shadow);
+}
+main .matrix .applicability, main .scope .outcome, main .audit .legal-summary {
+  background: #edf4ff; border-left-color: var(--g-blue);
+  border-radius: 16px; padding: 20px 24px;
+}
+main .scope .cards article {
+  border-top: 4px solid var(--g-blue); border-radius: 17px; padding: 22px;
+}
+main .scope .cards article:nth-child(2) { border-top-color: #34a853; }
+main .scope .cards article:nth-child(3) { border-top-color: #f9ab00; }
+main .matrix .details {
+  border-radius: 20px; padding: 27px; box-shadow: var(--g-shadow);
+}
+main .matrix .list button {
+  border-radius: 13px; border: 1px solid var(--g-line);
+  padding: 15px; min-height: 67px; transition: background .14s ease, border-color .14s ease;
+}
+main .matrix .list button:hover { border-color: #90b7ec; }
+main .matrix .list button.chosen { border-color: var(--g-blue); background: var(--g-blue-light); }
+main .matrix .list .number { color: var(--g-blue-dark); }
+main .matrix .product { border-radius: 15px; background: #f5f8ff; padding: 16px; }
+main .matrix .product span { color: var(--g-blue-dark); }
+main .matrix .evaluate { border-radius: 15px; background: #edf4ff; }
+main .matrix .links a { display: inline-block; padding: 9px 0; }
+main .matrix .numbers strong { color: #1a73e8; }
+main .matrix .numbers div:nth-child(2) strong { color: #188038; }
+main .matrix .numbers div:nth-child(3) strong { color: #b06000; }
+main .audit .stats>div { border-radius: 16px; }
+main .audit .stats>div:nth-child(1) strong { color: var(--g-green); }
+main .audit .stats>div:nth-child(2) strong { color: var(--g-red); }
+main .audit .stats>div:nth-child(3) strong { color: var(--g-blue-dark); }
+main .audit .stats>div:nth-child(4) strong { color: var(--g-muted); }
+main .audit .checklist { border-radius: 18px; }
+main .audit .checkrow:hover { background: #f9fbff; }
+main .audit .primary, main .quiz .primary {
+  background: var(--g-blue-dark); border-color: var(--g-blue-dark);
+  border-radius: 999px; padding: 13px 23px;
+}
+main .quiz fieldset { border-radius: 18px; margin: 22px 0; padding: 20px 24px; }
+main .quiz label { border-radius: 12px; transition: background .14s; }
+main .quiz label:hover { background: #f1f6ff; }
+main .quiz label.correct { background: var(--g-green-light); }
+main .quiz label.wrong { background: var(--g-red-light); }
+main .quiz .result { border-left: 4px solid var(--g-green); border-radius: 16px; }
+main .quiz .secondary { border-radius: 999px; padding: 13px 23px; }
+main .scope .form { border-radius: 18px; }
+main .matrix .disclaimer { border-radius: 12px; background: #fff9e9; }
+@media (max-width: 760px) {
+  main .matrix .details { padding: 20px; }
+  main .matrix .toolbar { align-items: stretch; }
+  main .scope .form { gap: 12px; }
+  main .quiz fieldset { padding: 15px; }
+}
+@media print {
+  body { background: white !important; }
+  .shell { max-width: none !important; padding: 0 !important; }
+  .shell > header, .shell > nav, .shell > footer { display: none !important; }
+  main { padding: 0 !important; margin: 0 !important; min-height: 0 !important; }
+  .audit .screen-only { display: none !important; }
+  .audit .print-report { display: block !important; }
+  .audit .print-report h1 { font-size: 24px !important; }
+  .audit .print-report h2 { font-size: 18px !important; }
+  .audit .print-report p, .audit .print-report li { color: #151515 !important; }
+  .audit .print-report .report-entry { break-inside: avoid; }
+  @page { size: A4; margin: 13mm; }
+}
