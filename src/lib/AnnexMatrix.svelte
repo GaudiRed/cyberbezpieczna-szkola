@@ -1,6 +1,7 @@
 <script lang="ts">
  import { annexRequirements, matchedFeatures, LEGAL_SOURCE, ANNEX_PDF, MINISTRY_FAQ, type Requirement } from '$lib/requirements';
  import type { Feature } from '$lib/content';
+ import { practicalAdvice } from '$lib/practicalAdvice';
  export let answers: Record<string,string> = {};
  export let updateAnswer: (id:string, value:string)=>void;
  let area='Wszystkie';
@@ -66,22 +67,53 @@
     <div class="meta"><span>Załącznik nr 4 · część I · pkt {selected.point}</span><span>{selected.area}</span></div>
     <h2>{selected.title}</h2>
     <div class="section"><h3>Co wynika z przepisu?</h3><p>{selected.summary}</p><a href={ANNEX_PDF} target="_blank" rel="noopener noreferrer">Otwórz oficjalny tekst przepisu w Dzienniku Ustaw ↗</a></div>
-    <div class="section"><h3>Jak pomaga Google for Education?</h3>
-      {#if matchedFeatures(selected).length===0}
-       <p class="alert">Tutaj Google Workspace nie zapewnia samodzielnie wymaganego rozwiązania. Potrzebne są działania organizacyjne lub odrębne narzędzia.</p>
-      {:else}
-       {#each matchedFeatures(selected) as feature}
-        <div class="product">
-         <strong>{feature.title}</strong><span>{tierLabel[feature.tier]}</span>
-         <p>{feature.help}</p><a href={feature.link} target="_blank" rel="noopener noreferrer">Instrukcja Google ↗</a>
+    <div class="quick-actions" aria-label="Konkretne kroki">
+      <h3>Co zrobić? Krótka lista</h3>
+      {#if practicalAdvice[selected.id].google.length}
+        <div class="quick-group">
+          <strong>W Google for Education</strong>
+          <ul class="todo-list">
+            {#each practicalAdvice[selected.id].google as step}
+              <li><span class="checkmark" aria-hidden="true"></span><span>{step}</span></li>
+            {/each}
+          </ul>
         </div>
-       {/each}
       {/if}
+      {#if practicalAdvice[selected.id].school.length}
+        <div class="quick-group">
+          <strong>Po stronie szkoły {practicalAdvice[selected.id].google.length ? 'lub innych systemów' : ''}</strong>
+          <ul class="todo-list">
+            {#each practicalAdvice[selected.id].school as step}
+              <li><span class="checkmark" aria-hidden="true"></span><span>{step}</span></li>
+            {/each}
+          </ul>
+        </div>
+      {/if}
+      <p class="proof"><strong>Co zachować jako potwierdzenie?</strong> {practicalAdvice[selected.id].proof}</p>
     </div>
-    {#if selected.point===17}
-      <div class="section"><strong>Bezpłatne materiały edukacyjne Google</strong><p><a href="https://safety.google/intl/pl/" target="_blank" rel="noopener noreferrer">Google Safety Center ↗</a> · <a href="https://edu.google.com/learning-center/" target="_blank" rel="noopener noreferrer">Learning Center ↗</a> · <a href="https://beinternetawesome.withgoogle.com/educators" target="_blank" rel="noopener noreferrer">Be Internet Awesome ↗</a></p></div>
+    {#if matchedFeatures(selected).length}
+      <div class="section">
+        <h3>Funkcje Google i konkretne instrukcje</h3>
+        <div class="feature-links">
+          {#each matchedFeatures(selected) as feature}
+            <div class="feature-link">
+              <strong>{feature.title}</strong>
+              <small>{tierLabel[feature.tier]}</small>
+              <a href={feature.link} target="_blank" rel="noopener noreferrer">Instrukcja konfiguracji ↗</a>
+            </div>
+          {/each}
+        </div>
+      </div>
     {/if}
-    <div class="section"><h3>Co musi zrobić szkoła?</h3><p>{selected.schoolAction}</p><h3>Przykładowy dowód wdrożenia</h3><p>{selected.evidence}</p><div class="limitation"><h3>O czym warto pamiętać?</h3><p>{selected.limit}</p><h3>Co zrobić w tej sytuacji?</h3><p>{selected.resolution}</p></div></div>
+    {#if selected.point===17}
+      <div class="section"><strong>Bezpłatne materiały do szkolenia</strong><p><a href="https://safety.google/intl/pl/" target="_blank" rel="noopener noreferrer">Google Safety Center ↗</a> · <a href="https://edu.google.com/learning-center/" target="_blank" rel="noopener noreferrer">Google Learning Center ↗</a></p></div>
+    {/if}
+    <details class="fineprint">
+      <summary>Co jeszcze warto wiedzieć?</summary>
+      <p><strong>Granica działania Google:</strong> {selected.limit}</p>
+      <p><strong>Dokumentacja:</strong> {selected.evidence}</p>
+    </details>
+    <p class="partner-help">Potrzebujesz pomocy we wdrożeniu? <a href="#partnerzy">Skontaktuj się z Partnerem Google for Education</a>.</p>
     <div class="evaluate"><label for="requirement-status">Stan realizacji w naszej szkole</label>
      <select id="requirement-status" value={answers['annex:'+selected.id]||'unknown'} onchange={(e)=>updateAnswer('annex:'+selected.id,e.currentTarget.value)}>
       <option value="unknown">Nie sprawdzono</option><option value="todo">Wymaga działania</option><option value="done">Wdrożone i zweryfikowane</option><option value="na">Nie dotyczy (wymaga uzasadnienia)</option>
@@ -100,4 +132,23 @@
 .limitation{padding:17px 19px;border-radius:14px;background:#f5f9ff;border-left:3px solid #4285f4;margin-top:16px}
 .limitation h3{margin-top:9px}
 .limitation p{line-height:1.6}
+
+.quick-actions{background:#f8fbff;border:1px solid #dae7f8;border-radius:16px;padding:20px;margin:17px 0}
+.quick-actions h3{font-size:18px;margin:0 0 18px;color:#202124}
+.quick-group+.quick-group{margin-top:17px}
+.quick-group>strong{color:#2154a4;font-size:14px}
+.todo-list{list-style:none;padding:0;margin:10px 0;display:flex;flex-direction:column;gap:11px}
+.todo-list li{display:flex;align-items:flex-start;gap:11px;margin:0;color:#26364c;line-height:1.5;font-size:14px}
+.checkmark{display:inline-block;width:17px;height:17px;border:2px solid #4c83d6;border-radius:5px;flex:none;margin-top:3px;background:#fff}
+.proof{padding:12px 15px;margin:17px 0 0!important;background:#e9f5ec;border-radius:10px;color:#28543c!important;font-size:13px}
+.feature-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:11px;margin:11px 0}
+.feature-link{border:1px solid #e0e7ee;background:#fff;border-radius:11px;padding:14px;display:flex;flex-direction:column;gap:8px}
+.feature-link strong{font-size:13px;color:#29394f;line-height:1.4}
+.feature-link small{color:#60758b;font-size:11px}
+.feature-link a{font-size:12px}
+.fineprint{border:1px solid #e2e9f1;border-radius:10px;padding:12px 15px;margin:18px 0}
+.fineprint summary{cursor:pointer;font-weight:650;color:#4c5b70}
+.fineprint p{font-size:13px}
+.partner-help{font-size:13px;background:#f1f7ff;border-radius:10px;padding:13px 15px}
+.partner-help a{font-weight:700}
 </style>
