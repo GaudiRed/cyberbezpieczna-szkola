@@ -7,8 +7,8 @@
 - Strona wprowadzająca oraz wybór roli i edycji Google Workspace.
 - **Moje obowiązki:** kwalifikacja rodzaju szkoły w oparciu o oficjalne FAQ Ministerstwa Cyfryzacji, bez automatycznej oceny indywidualnego wpisu do wykazu KSC.
 - **18 wymagań KSC:** interaktywna matryca z załącznika nr 4, cz. I, połączona z funkcjami Google, zadaniami szkoły i przykładami dokumentacji.
-- Katalog funkcji Google Workspace for Education i ChromeOS, z filtrami, instrukcjami i informacją o licencjach.
-- **Autodiagnoza:** lokalna lista kontrolna, zapis w przeglądarce, raport z zadaniami, instrukcjami i źródłami, wydruk lub zapis w PDF przez funkcję drukowania.
+- Katalog funkcji Google Workspace for Education i ChromeOS: krótkie opisy korzyści, informacje o licencjach i kontakt do partnerów pomagających w konfiguracji.
+- **Autodiagnoza:** lokalna lista kontrolna, zapis w przeglądarce, raport z zadaniami, listą funkcji Google, źródłami i kontaktem do partnerów, wydruk lub zapis w PDF przez funkcję drukowania.
 - **Quiz:** pięć pytań edukacyjnych z wyjaśnieniami.
 - Biblioteka źródeł i materiałów Google.
 
