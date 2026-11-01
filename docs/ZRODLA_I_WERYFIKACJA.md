@@ -48,3 +48,13 @@ Ministerstwo Cyfryzacji w FAQ (pytanie 1.16) wskazuje, że szkoły publiczne i p
 2. Nie stwierdzamy, że włączenie funkcji Google jest równoznaczne ze zgodnością z prawem.
 3. Nie przedstawiamy materiałów ogólnych jako certyfikowanych szkoleń z KSC.
 4. W pierwszej wersji autodiagnoza działa lokalnie i nie weryfikuje automatycznie konfiguracji konsoli.
+
+## Prosty język i porady Google (standard redakcyjny)
+
+- Przy wymaganiu KSC pokazuj **najpierw obowiązek szkoły**, następnie krótką listę funkcji Google, które mogą wspierać jego realizację.
+- Każda funkcja ma tylko trzy informacje: **nazwa**, **korzyść opisana jednym prostym zdaniem**, **dostępność lub rodzaj licencji**.
+- Nie publikuj szczegółowych poleceń dotyczących konsoli administracyjnej, których nie potwierdza aktualna oficjalna dokumentacja dla danej licencji. Konfigurację i dostępność sprawdza administrator razem z wybranym Partnerem Google for Education.
+- Przy ograniczeniu podaj proste, wykonalne działanie szkoły. Nie zostawiaj samego ostrzeżenia.
+- Nie sugeruj, że zakup Google Workspace Education Plus lub ChromeOS Education Upgrade jest wymogiem ustawowym.
+- Informacje o licencjach i rozwiązaniach weryfikuj przed każdą istotną aktualizacją: https://edu.google.com/workspace-for-education/editions/compare-editions/ oraz https://edu.google.com/chromebooks/overview/.
+- Google Vault nie jest odseparowaną kopią zapasową.

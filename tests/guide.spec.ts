@@ -75,14 +75,14 @@ test('Raport do PDF zawiera wymagania KSC i funkcje Google bez elementów nawiga
   await expect(page.locator('.audit .print-report')).toBeVisible();
   await expect(page.locator('.audit .screen-only')).toBeHidden();
   await expect(page.locator('.audit .print-report')).toContainText('Część A. Realizacja wymagań KSC');
-  await expect(page.locator('.audit .print-report')).toContainText('Część B. Plan sprawdzenia i działań');
+  await expect(page.locator('.audit .print-report')).toContainText('Część B. Funkcje Google, które warto sprawdzić');
   await expect(page.locator('.audit .print-report')).toContainText('Odseparowane kopie zapasowe');
   await expect(page.locator('.print-source')).toContainText('Wydrukowano z:');
   await expect(page.locator('.print-source')).toContainText('Cyberbezpieczna szkoła z Google for Education');
   await expect(page.locator('.print-source')).toContainText('Data i godzina wydruku:');
   await expect(page.locator('.print-source')).toContainText(new URL(page.url()).origin);
   await expect(page.locator('.audit .print-report')).toContainText('Co zrobić w tej sytuacji:');
-  await expect(page.locator('.audit .print-report')).toContainText('niezależne rozwiązanie kopii zapasowych');
+  await expect(page.locator('.audit .print-report')).toContainText('oddzielne kopie zapasowe');
   const pdf = await page.pdf({ path: testInfo.outputPath('przykladowy-raport.pdf'), format: 'A4', printBackground: true, preferCSSPageSize: true });
   expect(pdf.byteLength).toBeGreaterThan(10_000);
 });
@@ -121,7 +121,7 @@ test('Ograniczenie w matrycy KSC nigdy nie pozostaje bez praktycznej odpowiedzi'
     expect(resolution.trim().length).toBeGreaterThan(65);
   }
   await list.filter({ hasText: /Pkt 1(?!\d)/ }).click();
-  await expect(page.locator('.matrix .details .limitation')).toContainText('Arkuszach Google');
+  await expect(page.locator('.matrix .details .limitation')).toContainText('Zrób jeden spis wszystkich urządzeń i usług szkoły');
 });
 
 test('Favicon Google oraz kontakty czterech partnerów są dostępne na komputerze i telefonie', async ({ page }) => {
@@ -141,4 +141,29 @@ test('Favicon Google oraz kontakty czterech partnerów są dostępne na komputer
   await expect(page).toHaveURL(/#partnerzy$/);
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
   expect(overflow).toBeLessThanOrEqual(2);
+});
+
+test('Porady Google są krótkie, jasne i prowadzą do partnerów', async ({ page }) => {
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('.shell')).toHaveAttribute('data-hydrated', 'true');
+  await page.getByRole('navigation').getByRole('button', { name: '18 wymagań KSC' }).click();
+  await expect(page.locator('.matrix .feature-list .feature-item').first()).toBeVisible();
+  await expect(page.locator('.matrix .google-support')).toContainText(/funkcje Google/i);
+  await expect(page.locator('.matrix .google-support')).toContainText('Skontaktuj się z wybranym Partnerem Google for Education.');
+  await expect(page.locator('.matrix .google-support a[href="#partnerzy"]')).toHaveCount(1);
+
+  await page.getByRole('navigation').getByRole('button', { name: 'Zabezpieczenia' }).click();
+  await expect(page.locator('.catalog .detail')).toContainText('Co daje szkole?');
+  await expect(page.locator('.catalog .detail')).toContainText('Nie wiesz, jak uruchomić tę funkcję?');
+  await expect(page.locator('.catalog .detail ol')).toHaveCount(0);
+  await expect(page.locator('.catalog .detail a[href="#partnerzy"]')).toHaveCount(1);
+  await page.locator('.catalog .detail a[href="#partnerzy"]').click();
+  await expect(page).toHaveURL(/#partnerzy$/);
+
+  await page.getByRole('navigation').getByRole('button', { name: 'Autodiagnoza' }).click();
+  await expect(page.locator('.audit .screen-only')).toContainText('Skontaktuj się z Partnerem Google for Education.');
+  await page.emulateMedia({ media: 'print' });
+  await expect(page.locator('.audit .print-report')).toContainText('Kontakty partnerów Google for Education:');
+  await expect(page.locator('.audit .print-report')).toContainText('Co daje szkole:');
+  await expect(page.locator('.audit .print-report')).not.toContainText('Co sprawdzić lub wykonać:');
 });

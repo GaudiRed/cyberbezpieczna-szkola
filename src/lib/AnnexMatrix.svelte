@@ -66,17 +66,24 @@
     <div class="meta"><span>Załącznik nr 4 · część I · pkt {selected.point}</span><span>{selected.area}</span></div>
     <h2>{selected.title}</h2>
     <div class="section"><h3>Co wynika z przepisu?</h3><p>{selected.summary}</p><a href={ANNEX_PDF} target="_blank" rel="noopener noreferrer">Otwórz oficjalny tekst przepisu w Dzienniku Ustaw ↗</a></div>
-    <div class="section"><h3>Jak pomaga Google for Education?</h3>
+    <div class="section google-support">
+      <h3>Jakie funkcje Google mogą pomóc?</h3>
+      <p>Oto funkcje, które warto znać. Nie oznacza to, że szkoła musi kupić każdą z nich.</p>
       {#if matchedFeatures(selected).length===0}
-       <p class="alert">Tutaj Google Workspace nie zapewnia samodzielnie wymaganego rozwiązania. Potrzebne są działania organizacyjne lub odrębne narzędzia.</p>
+        <p class="alert">W tym obszarze najważniejsze są działania organizacyjne lub osobne rozwiązanie, np. do wykonywania kopii zapasowych.</p>
       {:else}
-       {#each matchedFeatures(selected) as feature}
-        <div class="product">
-         <strong>{feature.title}</strong><span>{tierLabel[feature.tier]}</span>
-         <p>{feature.help}</p><a href={feature.link} target="_blank" rel="noopener noreferrer">Instrukcja Google ↗</a>
-        </div>
-       {/each}
+        <ul class="feature-list">
+          {#each matchedFeatures(selected) as feature (feature.id)}
+            <li class="feature-item">
+              <strong>{feature.title}</strong>
+              <span class="edition">{tierLabel[feature.tier]}</span>
+              <p>{feature.help}</p>
+              <a href={feature.link} target="_blank" rel="noopener noreferrer">Więcej o funkcji w Google ↗</a>
+            </li>
+          {/each}
+        </ul>
       {/if}
+      <p class="partner-help">Nie wiesz, czy szkoła ma te funkcje lub jak je uruchomić? <a href="#partnerzy">Skontaktuj się z wybranym Partnerem Google for Education.</a></p>
     </div>
     {#if selected.point===17}
       <div class="section"><strong>Bezpłatne materiały edukacyjne Google</strong><p><a href="https://safety.google/intl/pl/" target="_blank" rel="noopener noreferrer">Google Safety Center ↗</a> · <a href="https://edu.google.com/learning-center/" target="_blank" rel="noopener noreferrer">Learning Center ↗</a> · <a href="https://beinternetawesome.withgoogle.com/educators" target="_blank" rel="noopener noreferrer">Be Internet Awesome ↗</a></p></div>
@@ -100,4 +107,12 @@
 .limitation{padding:17px 19px;border-radius:14px;background:#f5f9ff;border-left:3px solid #4285f4;margin-top:16px}
 .limitation h3{margin-top:9px}
 .limitation p{line-height:1.6}
+
+.google-support>.partner-help{background:#e8f0fe;border-radius:12px;padding:14px 16px;color:#254974;margin-top:15px}
+.feature-list{list-style:none;margin:14px 0;padding:0;display:grid;gap:10px}
+.feature-item{background:#f7faff;border:1px solid #dfe7f4;border-radius:14px;padding:15px 17px}
+.feature-item strong{display:block;color:#202124;line-height:1.45}
+.feature-item .edition{font-weight:700;color:#225d9e;font-size:12px;display:block;margin-top:5px}
+.feature-item p{margin:9px 0 5px;font-size:13px;line-height:1.55}
+.feature-item a{font-size:12px}
 </style>
