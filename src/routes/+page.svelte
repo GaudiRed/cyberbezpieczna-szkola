@@ -12,13 +12,14 @@
  let answers:Record<string,string>={};
  let role='dyrektor';let edition='fundamentals';
  let logoFailed=false;
- onMount(()=>{try{answers=JSON.parse(localStorage.getItem('cyber-guide-checks')||'{}')}catch{answers={}}});
+ let hydrated=false;
+ onMount(()=>{try{answers=JSON.parse(localStorage.getItem('cyber-guide-checks')||'{}')}catch{answers={}} hydrated=true;});
  $: shown=features.filter(f=>(filter==='all'||f.tier===filter)&&[f.title,f.risk,f.category].join(' ').toLocaleLowerCase('pl').includes(search.toLocaleLowerCase('pl')));
  $: if (shown.length > 0 && !shown.some((feature) => feature.id === active.id)) active = shown[0];
  function answer(id:string,v:string){answers={...answers,[id]:v};try{localStorage.setItem('cyber-guide-checks',JSON.stringify(answers))}catch{}}
 </script>
 <svelte:head><title>Cyberbezpieczna szkoła | Interaktywny poradnik</title><meta name="description" content="Interaktywny przewodnik po zabezpieczeniach szkoły i rozwiązaniach Google for Education."/></svelte:head>
-<div class="shell">
+<div class="shell" data-hydrated={hydrated}>
 <header class="topbar">
  <div class="brand">
   <span class="project-symbol" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M16 3 28 8v9c0 7-4.8 11-12 13C8.8 28 4 24 4 17V8L16 3Z" fill="#4285F4"/><path d="m10.5 16.6 4 4 7-8" stroke="white" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
