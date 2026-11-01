@@ -4,7 +4,7 @@ test('Strona startowa i menu działają na ekranie komputera i telefonu', async 
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: /Od wymagania do konkretnego zabezpieczenia/i })).toBeVisible();
+  await expect(page.getByRole('heading', { name: /Bezpieczniejsza szkoła. Prostsze działania./i })).toBeVisible();
   await expect(page.getByRole('navigation', { name: 'Nawigacja główna' })).toBeVisible();
   await page.getByRole('navigation').getByRole('button', { name: 'Źródła i kursy' }).click();
   await expect(page.getByRole('heading', { name: 'Oficjalne dokumenty i szkolenia' })).toBeVisible();
