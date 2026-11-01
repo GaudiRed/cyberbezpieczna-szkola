@@ -1,0 +1,33 @@
+name: Test aplikacji
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pobierz repozytorium
+        uses: actions/checkout@v4
+      - name: Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Zainstaluj zależności
+        run: npm install --no-audit --no-fund
+      - name: Kontrola typów i komponentów
+        run: npm run check
+      - name: Kompilacja statycznej aplikacji
+        run: npm run build
+      - name: Zachowaj wynik kompilacji (bez publikacji)
+        uses: actions/upload-artifact@v4
+        with:
+          name: cyberbezpieczna-szkola-build
+          path: build/
+          if-no-files-found: error
