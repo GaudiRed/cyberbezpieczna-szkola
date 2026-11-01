@@ -2,6 +2,7 @@
  let schoolType='public';
  let ownerType='jst';
  let kscStatus='unknown';
+ const faq='https://cyber.gov.pl/assets/pdf/faq-ksc.pdf#page=19';
  const sources=[
   {title:'Ustawa o krajowym systemie cyberbezpieczeństwa, tekst jednolity',url:'https://eli.gov.pl/eli/DU/2026/20/ogl'},
   {title:'Ustawa zmieniająca KSC (Dz.U. 2026 poz. 252)',url:'https://eli.gov.pl/eli/DU/2026/252/ogl'},
@@ -13,7 +14,7 @@
 <section class="scope">
  <div class="eyebrow">ZAKRES OBOWIĄZKÓW</div>
  <h1>Najpierw ustal, które przepisy mają zastosowanie</h1>
- <p>Wybory poniżej pomagają uporządkować sytuację organizacyjną szkoły. Nie określają automatycznie statusu podmiotu kluczowego ani ważnego w rozumieniu KSC.</p>
+ <p>Ministerstwo Cyfryzacji wskazuje, że publiczne szkoły i przedszkola będące jednostkami budżetowymi są objęte KSC. Dla podmiotów ważnych będących podmiotami publicznymi przewidziano uproszczone wymagania w załączniku nr 4. Inne formy organizacyjne wymagają odrębnego ustalenia statusu.</p><p><a href={faq} target="_blank" rel="noopener noreferrer">FAQ Ministerstwa Cyfryzacji, pytanie 1.16 ↗</a></p>
  <div class="form">
   <label>Rodzaj szkoły<select bind:value={schoolType}><option value="public">Szkoła publiczna</option><option value="nonpublic">Szkoła niepubliczna</option><option value="other">Inna placówka oświatowa</option></select></label>
   <label>Organ prowadzący<select bind:value={ownerType}><option value="jst">Jednostka samorządu terytorialnego</option><option value="other">Inny podmiot</option><option value="unknown">Nie wiem</option></select></label>
@@ -21,11 +22,12 @@
  </div>
  <div class="outcome">
   <h2>Co wynika z wyboru?</h2>
+  {#if schoolType==='public' && ownerType==='jst'}<p><strong>Szkoła samorządowa:</strong> przy działaniu jako samorządowa jednostka budżetowa jest objęta KSC. Uproszczony zakres SZBI dla podmiotu ważnego będącego publicznym wynika z art. 8 ust. 3 i załącznika nr 4. Ustal z organem prowadzącym, które systemy i zadania pozostają po stronie placówki, a które są realizowane wspólnie.</p>{/if}
   <p><strong>RODO:</strong> szkoła przetwarzająca dane osobowe powinna stosować odpowiednie środki techniczne i organizacyjne, dobrane do ryzyka. Przykładowe funkcje Google to 2SV, zarządzanie dostępem i kontrola udostępniania.</p>
   {#if kscStatus==='confirmed'}
    <p><strong>KSC:</strong> wskazano, że status jest potwierdzony. Zweryfikuj kategorię podmiotu, właściwy organ, terminy i zakres obowiązków na podstawie aktualnego prawa oraz dokumentacji podmiotu.</p>
   {:else}
-   <p><strong>KSC:</strong> status podmiotu wymaga ustalenia. Sam fakt, że placówka jest {schoolType==='public'?'publiczna':'niepubliczna lub innego rodzaju'}, nie wystarcza do przypisania jej wszystkich obowiązków KSC. Zweryfikuj status w przepisach i oficjalnych wyjaśnieniach Ministerstwa Cyfryzacji oraz ustal zakres odpowiedzialności z organem prowadzącym. Przy niepewności pozostaw status jako „nieustalony”.</p>
+   <p><strong>KSC:</strong> status podmiotu wymaga ustalenia. Nie przypisuj automatycznie wszystkich obowiązków KSC tylko na podstawie ogólnej nazwy placówki. Dla samorządowej jednostki budżetowej skorzystaj przede wszystkim z załącznika nr 4, a dla innych podmiotów ustal kategorię i zakres obowiązków. Zweryfikuj status w przepisach i oficjalnych wyjaśnieniach Ministerstwa Cyfryzacji oraz ustal zakres odpowiedzialności z organem prowadzącym. Przy niepewności pozostaw status jako „nieustalony”.</p>
   {/if}
   {#if ownerType==='jst'}
    <p><strong>Organ prowadzący:</strong> ustal, za które systemy i procesy odpowiada szkoła, a które zabezpieczenia i procedury są organizowane przez JST.</p>

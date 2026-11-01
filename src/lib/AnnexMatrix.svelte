@@ -1,0 +1,99 @@
+<script lang="ts">
+ import { annexRequirements, matchedFeatures, LEGAL_SOURCE, ANNEX_PDF, MINISTRY_FAQ, type Requirement } from '$lib/requirements';
+ import type { Feature } from '$lib/content';
+ export let answers: Record<string,string> = {};
+ export let updateAnswer: (id:string, value:string)=>void;
+ let area='Wszystkie';
+ let query='';
+ let selected:Requirement=annexRequirements[0];
+ let scope:'public'|'other'|'unknown'='public';
+ let showOnlyOpen=false;
+ const tierLabel: Record<Feature['tier'],string>={
+   fundamentals:'Fundamentals · bez dodatkowej opłaty',
+   plus:'Education Plus · płatne',
+   chromeos:'ChromeOS · wbudowane',
+   upgrade:'ChromeOS Education Upgrade · płatne',
+   public:'Publicznie bezpłatne'
+ };
+ $: visible = annexRequirements.filter((r) =>
+   (area==='Wszystkie'||r.area===area)&&
+   (!showOnlyOpen||!['done','na'].includes(answers['annex:'+r.id]||'unknown'))&&
+   (r.title+' '+r.summary+' '+r.point).toLocaleLowerCase('pl').includes(query.toLocaleLowerCase('pl'))
+ );
+ $: completed = annexRequirements.filter((r)=>answers['annex:'+r.id]==='done').length;
+ $: pending = annexRequirements.filter((r)=>answers['annex:'+r.id]==='todo').length;
+ const categories=['Wszystkie','Dostęp','Dane','Urządzenia','Poczta','Ludzie','Procedury'];
+</script>
+
+<section class="matrix">
+ <div class="eyebrow">ZAŁĄCZNIK NR 4 · KSC</div>
+ <h1>18 wymagań, konkretne działania</h1>
+ <p>Wybierz wymaganie i sprawdź, które funkcje Google for Education mogą w jego realizacji pomóc. Obok opisujemy czynności, za które nadal odpowiada szkoła lub jej organ prowadzący.</p>
+ <div class="applicability">
+  <label for="schoolstatus"><strong>Jaką placówkę analizujesz?</strong></label>
+  <select id="schoolstatus" bind:value={scope}>
+   <option value="public">Publiczna szkoła lub przedszkole będące jednostką budżetową</option>
+   <option value="other">Placówka o innej formie organizacyjnej</option>
+   <option value="unknown">Nie znam formy organizacyjnej</option>
+  </select>
+  {#if scope==='public'}
+   <p>Ministerstwo Cyfryzacji potwierdza w FAQ (pyt. 1.16), że publiczne szkoły i przedszkola będące jednostkami budżetowymi są podmiotami KSC. Uproszczone wymagania dotyczą podmiotów ważnych będących podmiotami publicznymi, zgodnie z art. 8 ust. 3 i załącznikiem nr 4. Sprawdź dokładny status i odpowiedzialność organizacyjną swojej placówki.</p>
+  {:else}
+   <p>Nie przesądzamy stosowania załącznika nr 4 do tej placówki. Potwierdź jej status prawny i kategorię w KSC przed traktowaniem wymagań jako obowiązkowych. Możesz używać kart jako dobrych praktyk.</p>
+  {/if}
+  <div class="links"><a href={LEGAL_SOURCE} target="_blank" rel="noopener noreferrer">Ustawa i nowelizacja ↗</a><a href={MINISTRY_FAQ} target="_blank" rel="noopener noreferrer">FAQ Ministerstwa Cyfryzacji ↗</a></div>
+ </div>
+ <div class="numbers">
+  <div><strong>18</strong><span>wymagań w części I</span></div><div><strong>{completed}</strong><span>potwierdzonych przez użytkownika</span></div><div><strong>{pending}</strong><span>oznaczonych do działania</span></div>
+ </div>
+ <div class="toolbar">
+  <label><span>Szukaj wymagania</span><input placeholder="np. kopie zapasowe lub dostęp" bind:value={query}/></label>
+  <label><span>Obszar</span><select bind:value={area}>{#each categories as category}<option value={category}>{category}</option>{/each}</select></label>
+  <label class="toggle"><input type="checkbox" bind:checked={showOnlyOpen}/> Pokaż niesprawdzone i niezrealizowane</label>
+ </div>
+ <div class="layout">
+  <div class="list" aria-label="Wymagania załącznika nr 4">
+   {#each visible as requirement}
+    <button type="button" class:chosen={selected.id===requirement.id} onclick={()=>selected=requirement}>
+     <span class="number">Pkt {requirement.point}</span>
+     <span class="name">{requirement.title}</span>
+     {#if answers['annex:'+requirement.id]==='done'}<span class="state">Sprawdzone</span>{:else if answers['annex:'+requirement.id]==='todo'}<span class="state todo">Do działania</span>{/if}
+    </button>
+   {/each}
+   {#if visible.length===0}<div class="empty">Brak wyników. Zmień filtry.</div>{/if}
+  </div>
+  <article class="details">
+    <div class="meta"><span>Załącznik nr 4 · część I · pkt {selected.point}</span><span>{selected.area}</span></div>
+    <h2>{selected.title}</h2>
+    <div class="section"><h3>Co wynika z przepisu?</h3><p>{selected.summary}</p><a href={ANNEX_PDF} target="_blank" rel="noopener noreferrer">Otwórz oficjalny tekst przepisu w Dzienniku Ustaw ↗</a></div>
+    <div class="section"><h3>Jak pomaga Google for Education?</h3>
+      {#if matchedFeatures(selected).length===0}
+       <p class="alert">Tutaj Google Workspace nie zapewnia samodzielnie wymaganego rozwiązania. Potrzebne są działania organizacyjne lub odrębne narzędzia.</p>
+      {:else}
+       {#each matchedFeatures(selected) as feature}
+        <div class="product">
+         <strong>{feature.title}</strong><span>{tierLabel[feature.tier]}</span>
+         <p>{feature.help}</p><a href={feature.link} target="_blank" rel="noopener noreferrer">Instrukcja Google ↗</a>
+        </div>
+       {/each}
+      {/if}
+    </div>
+    {#if selected.point===17}
+      <div class="section"><strong>Bezpłatne materiały edukacyjne Google</strong><p><a href="https://safety.google/intl/pl/" target="_blank" rel="noopener noreferrer">Google Safety Center ↗</a> · <a href="https://edu.google.com/learning-center/" target="_blank" rel="noopener noreferrer">Learning Center ↗</a> · <a href="https://beinternetawesome.withgoogle.com/educators" target="_blank" rel="noopener noreferrer">Be Internet Awesome ↗</a></p></div>
+    {/if}
+    <div class="section"><h3>Co musi zrobić szkoła?</h3><p>{selected.schoolAction}</p><h3>Przykładowy dowód wdrożenia</h3><p>{selected.evidence}</p><h3>Czego nie zapewnia samo Google?</h3><p>{selected.limit}</p></div>
+    <div class="evaluate"><label for="requirement-status">Stan realizacji w naszej szkole</label>
+     <select id="requirement-status" value={answers['annex:'+selected.id]||'unknown'} onchange={(e)=>updateAnswer('annex:'+selected.id,e.currentTarget.value)}>
+      <option value="unknown">Nie sprawdzono</option><option value="todo">Wymaga działania</option><option value="done">Wdrożone i zweryfikowane</option><option value="na">Nie dotyczy (wymaga uzasadnienia)</option>
+     </select>
+     <p>Odpowiedź jest deklaracją użytkownika. Nie oznacza automatycznie spełnienia przepisów.</p>
+    </div>
+  </article>
+ </div>
+ <div class="disclaimer">
+  <strong>Zakres:</strong> przedstawiamy obowiązki z części I załącznika nr 4, a nie wszystkie przepisy KSC. W części II załącznika są rozwiązania dodatkowe, natomiast część III przewiduje przegląd co najmniej raz w roku lub w sytuacjach wskazanych w przepisie, a część IV dokumentowanie realizacji działań. Funkcje Google mają charakter wspierający i nie zastępują systemu zarządzania bezpieczeństwem informacji.
+ </div>
+</section>
+<style>
+.matrix{max-width:1180px}.eyebrow{font-size:12px;color:#265cb4;letter-spacing:2px;font-weight:800}h1{font-size:clamp(30px,4vw,44px);margin:12px 0}p{line-height:1.58;color:#5b6980}.applicability{background:#eaf2ff;border-left:4px solid #2867ba;border-radius:11px;padding:22px;margin:24px 0}.applicability label{display:block;margin-bottom:7px}.applicability select{width:100%}.links{display:flex;gap:16px;flex-wrap:wrap}.links a,.section a{color:#185db7;font-weight:650}.numbers{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0}.numbers div{background:#fff;border:1px solid #e0e7f0;border-radius:12px;padding:16px;display:flex;align-items:center;gap:12px}.numbers strong{font-size:28px}.numbers span{color:#64748b;font-size:12px}.toolbar{display:flex;align-items:end;gap:12px;flex-wrap:wrap;margin:22px 0}.toolbar label{display:flex;flex-direction:column;gap:5px;font-size:13px;font-weight:650}.toolbar label:first-child{flex:1}.toolbar .toggle{flex-direction:row;align-items:center;padding:12px}.toolbar .toggle input{width:auto}.toolbar select,.toolbar input,.applicability select,.evaluate select{border:1px solid #cbd5e1;border-radius:8px;padding:11px;background:#fff;color:#243454;max-width:100%}.layout{display:grid;grid-template-columns:minmax(240px,350px) minmax(0,1fr);gap:17px;align-items:start}.list{display:flex;flex-direction:column;gap:6px;max-height:760px;overflow:auto}.list button{text-align:left;border:1px solid #dce4ed;background:white;border-radius:11px;padding:13px 15px;display:flex;flex-direction:column;align-items:start;gap:5px;color:#18283f;cursor:pointer}.list button.chosen{background:#e9f2ff;border-color:#2770cf}.list .number{font-size:11px;font-weight:800;color:#2966bb}.list .name{font-weight:680}.state{font-size:11px;color:#227a55}.state.todo{color:#a25b0b}.details{background:white;border:1px solid #dbe5ef;border-radius:15px;padding:24px;min-width:0}.details h2{font-size:26px;margin:12px 0}.meta{font-size:12px;font-weight:700;color:#496d9f;display:flex;gap:14px;flex-wrap:wrap}.section{border-top:1px solid #edf0f5;padding:17px 0}.section h3{font-size:15px;margin:8px 0}.section p{margin:9px 0}.product{background:#f4f8fd;border:1px solid #e1e9f2;border-radius:10px;padding:14px;margin:10px 0}.product strong{display:block}.product span{display:block;font-size:12px;font-weight:700;color:#275b9b;margin-top:6px}.product p{font-size:13px}.alert{background:#fff6e8;padding:12px;border-radius:8px}.evaluate{background:#eaf2ff;border-radius:10px;padding:15px;display:flex;flex-direction:column;gap:8px}.evaluate label{font-weight:700}.evaluate p{font-size:12px;margin:0}.disclaimer{background:#fff9e9;border-left:3px solid #d39b28;padding:17px;margin-top:25px;font-size:13px;line-height:1.5;color:#64532d}.empty{padding:18px;color:#64748b}@media(max-width:760px){.layout{grid-template-columns:1fr}.numbers{grid-template-columns:1fr}.list{max-height:280px}.toolbar label{width:100%}.details{padding:18px}}@media print{.toolbar,.list,.numbers,.evaluate{display:none!important}.layout{display:block}.details{border:0}.disclaimer{page-break-before:avoid}}
+</style>

@@ -5,7 +5,8 @@
 ## Co jest już dostępne?
 
 - Strona wprowadzająca oraz wybór roli i edycji Google Workspace.
-- **Moje obowiązki:** pomoc w uporządkowaniu źródeł prawa, bez automatycznego przypisywania statusu podmiotu KSC.
+- **Moje obowiązki:** kwalifikacja rodzaju szkoły w oparciu o oficjalne FAQ Ministerstwa Cyfryzacji, bez automatycznej oceny indywidualnego wpisu do wykazu KSC.
+- **18 wymagań KSC:** interaktywna matryca z załącznika nr 4, cz. I, połączona z funkcjami Google, zadaniami szkoły i przykładami dokumentacji.
 - Katalog funkcji Google Workspace for Education i ChromeOS, z filtrami, instrukcjami i informacją o licencjach.
 - **Autodiagnoza:** lokalna lista kontrolna, zapis w przeglądarce, raport z zadaniami, instrukcjami i źródłami, wydruk lub zapis w PDF przez funkcję drukowania.
 - **Quiz:** pięć pytań edukacyjnych z wyjaśnieniami.
@@ -38,6 +39,6 @@ Projekt jest przygotowany pod GitHub Pages (statyczny SvelteKit, ścieżka bazow
 
 Zobacz [Rejestr źródeł i weryfikacji](docs/ZRODLA_I_WERYFIKACJA.md).
 
-Kwalifikacja szkoły jako podmiotu KSC wymaga indywidualnej analizy. Funkcje Google wspierają ochronę kont, danych i urządzeń, ale nie zapewniają automatycznej zgodności z KSC/NIS2/RODO.
+Ministerstwo Cyfryzacji potwierdza, że szkoły publiczne i przedszkola będące jednostkami budżetowymi podlegają KSC (FAQ pyt. 1.16). Dla podmiotów ważnych będących podmiotami publicznymi zastosowanie ma art. 8 ust. 3 i załącznik nr 4. Pozostałe podmioty wymagają indywidualnej kwalifikacji. Funkcje Google wspierają ochronę kont, danych i urządzeń, ale nie zapewniają automatycznej zgodności z KSC/NIS2/RODO.
 
 Wyniki autodiagnozy są przechowywane lokalnie w `localStorage`, nie są wysyłane do serwera. Wyczyszczenie danych przeglądarki usuwa zapisane odpowiedzi.
