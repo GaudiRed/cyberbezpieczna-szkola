@@ -121,7 +121,7 @@ test('Ograniczenie w matrycy KSC nigdy nie pozostaje bez praktycznej odpowiedzi'
     expect(resolution.trim().length).toBeGreaterThan(65);
   }
   await list.filter({ hasText: /Pkt 1(?!\d)/ }).click();
-  await expect(page.locator('.matrix .details .limitation')).toContainText('Arkuszach Google');
+  await expect(page.locator('.matrix .details .limitation')).toContainText('Zrób jeden spis wszystkich urządzeń i usług szkoły');
 });
 
 test('Favicon Google oraz kontakty czterech partnerów są dostępne na komputerze i telefonie', async ({ page }) => {
