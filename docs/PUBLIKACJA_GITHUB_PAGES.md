@@ -15,12 +15,12 @@ Jeśli repozytorium jest prywatne, a konto korzysta z darmowego planu GitHub:
 3. Otwórz `https://github.com/GaudiRed/cyberbezpieczna-szkola/settings/pages`.
 4. W **Build and deployment → Source** wybierz **GitHub Actions**.
 5. Otwórz `https://github.com/GaudiRed/cyberbezpieczna-szkola/actions/workflows/publish-pages.yml`.
-6. Wybierz **Run workflow → Branch: main → Run workflow**.
+6. Przy pierwszej publikacji uruchom workflow przez **Run workflow → Branch: main → Run workflow**, jeśli nie uruchomił się sam po włączeniu GitHub Pages.
 7. Po udanym zakończeniu akcji witryna powinna być widoczna pod adresem: `https://gaudired.github.io/cyberbezpieczna-szkola/`.
 
 Jeśli konto pozwala na GitHub Pages w prywatnym repozytorium, można pozostawić kod prywatny i wykonać kroki 3–7. Uwaga: sama witryna GitHub Pages na standardowym koncie nadal będzie publiczna.
 
-Publikacja jest **manualna**, ponieważ poradnik pozostaje wersją demonstracyjną. Każda kolejna publikacja wymaga świadomego uruchomienia akcji. Rutynowy push do main uruchamia testy, ale nie aktualizuje publicznej strony.
+**Publikacja automatyczna:** każda zmiana zaakceptowana i zapisana w gałęzi `main` uruchamia kontrolę typów, kompilację i aktualizację strony GitHub Pages. Nadal można skorzystać z ręcznego przycisku **Run workflow**. Jeśli Pages nie jest skonfigurowane, wymagane jest ustawienie źródła **GitHub Actions** w ustawieniach repozytorium.
 
 ## Sprawdzenie po publikacji
 
