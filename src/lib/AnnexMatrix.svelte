@@ -105,6 +105,32 @@
         </div>
       </div>
     {/if}
+    {#if selected.point===10}
+      <section class="backup-workarounds" aria-label="Warianty tworzenia kopii zapasowych z pomocą Google">
+        <h3>Trzy sposoby na rozpoczęcie tworzenia kopii</h3>
+        <div class="backup-grid">
+          <article>
+            <span>START · eksporter Workspace</span>
+            <h4>Eksport i kopia offline</h4>
+            <p>Uruchom pełny eksport w konsoli administratora, pobierz archiwum, zapisz je na zaszyfrowanym odłączanym nośniku i przechowuj w oddzielnym, zabezpieczonym miejscu.</p>
+            <a href="https://knowledge.workspace.google.com/admin/migrate/export-all-your-organizations-data" target="_blank" rel="noopener noreferrer">Jak uruchomić eksport ↗</a>
+          </article>
+          <article>
+            <span>ROZSZERZENIE · Google Cloud</span>
+            <h4>Chronione archiwum w Cloud Storage</h4>
+            <p>Wydziel zasób Cloud Storage z osobnymi uprawnieniami. Rozważ retencję, soft delete i ochronę przed usunięciem. To usługa wymagająca konfiguracji i zwykle płatna.</p>
+            <a href="https://docs.cloud.google.com/storage/docs/protection-backup-recovery-overview" target="_blank" rel="noopener noreferrer">Mechanizmy ochrony Cloud Storage ↗</a>
+          </article>
+          <article>
+            <span>DOCELOWO · wdrożenie z partnerem</span>
+            <h4>Regularny backup i odzyskiwanie</h4>
+            <p>Partner pomoże dobrać narzędzie do cyklicznych kopii danych, ustalić separację dostępów oraz przećwiczyć przywracanie plików lub usług.</p>
+            <a href="#partnerzy">Kontakty partnerów Google for Education ↓</a>
+          </article>
+        </div>
+        <p class="backup-caution"><strong>Ważne:</strong> eksport Workspace nie jest automatycznym backupem i nie gwarantuje szybkiego przywrócenia usług. W standardowym eksporcie dane na tymczasowym zasobie Google są usuwane po 60 dniach od rozpoczęcia eksportu, dlatego trzeba je pobrać. Vault ani historia wersji na Dysku nie zastępują kopii odseparowanych. O spełnieniu wymagania decydują również rzeczywista separacja i test odzyskiwania.</p>
+      </section>
+    {/if}
     {#if selected.point===17}
       <div class="section"><strong>Bezpłatne materiały do szkolenia</strong><p><a href="https://safety.google/intl/pl/" target="_blank" rel="noopener noreferrer">Google Safety Center ↗</a> · <a href="https://edu.google.com/learning-center/" target="_blank" rel="noopener noreferrer">Google Learning Center ↗</a></p></div>
     {/if}
@@ -160,4 +186,15 @@
 .partner-help{font-size:13px;background:#f1f7ff;border-radius:10px;padding:13px 15px}
 .partner-help a{font-weight:700}
 
+
+.backup-workarounds{padding:19px;background:#f1f7ff;border:1px solid #d8e6f6;border-radius:16px;margin:20px 0}
+.backup-workarounds>h3{font-size:17px;margin:0 0 15px}
+.backup-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.backup-grid article{border:1px solid #dce6f3;background:#fff;padding:17px;border-radius:13px;display:flex;flex-direction:column;gap:10px}
+.backup-grid article>span{font-size:10px;letter-spacing:.06em;font-weight:800;color:#1e5ca7}
+.backup-grid h4{margin:0;font-size:15px;color:#24364d}
+.backup-grid p{font-size:13px;margin:0;line-height:1.55}
+.backup-grid a{font-size:12px;font-weight:700;margin-top:auto}
+.backup-caution{font-size:12px;line-height:1.55;background:#fff9ec;color:#624b28!important;border-left:3px solid #f9ab00;padding:12px 14px;border-radius:8px;margin:16px 0 0!important}
+@media(max-width:1030px){.backup-grid{grid-template-columns:1fr}}
 </style>
