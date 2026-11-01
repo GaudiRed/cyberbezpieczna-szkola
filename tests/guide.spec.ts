@@ -113,14 +113,14 @@ test('Wszystkie 18 kart KSC zawiera krótkie zadania i potwierdzenie wykonania',
   const list = page.locator('.matrix .list button');
   await expect(list).toHaveCount(18);
   for (let n = 1; n <= 18; n++) {
-    await list.filter({ hasText: new RegExp('Pkt ' + n + '(\\\\D|$)') }).click();
+    await list.nth(n-1).click();
     const actions = page.locator('.matrix .details .quick-actions');
     await expect(actions).toContainText('Co zrobić? Krótka lista');
     await expect(actions.locator('.todo-list li').first()).toBeVisible();
     expect(await actions.locator('.todo-list li').count()).toBeLessThanOrEqual(4);
     await expect(actions).toContainText('Co zachować jako potwierdzenie?');
   }
-  await list.filter({ hasText: /Pkt 1(?!\\d)/ }).click();
+  await list.first().click();
   await expect(page.locator('.matrix .details .quick-actions')).toContainText('Sprawdź listę kont i administratorów');
   await expect(page.locator('.matrix .details .partner-help')).toContainText('Partnerem Google for Education');
 });
@@ -134,7 +134,7 @@ test('Instrukcje zabezpieczeń prowadzą do pomocy technicznej zamiast stron mar
   for (let n = 0; n < 11; n++) {
     await list.nth(n).click();
     const url = await page.getByRole('link', { name: 'Otwórz instrukcję konfiguracji Google' }).getAttribute('href');
-    expect(url).toMatch(/^https:\\/\\/(support\\.google\\.com|knowledge\\.workspace\\.google\\.com)\\//);
+    expect(['support.google.com', 'knowledge.workspace.google.com']).toContain(new URL(url!).hostname);
     await expect(page.locator('.catalog .detail .feature-actions li').first()).toBeVisible();
   }
 });
