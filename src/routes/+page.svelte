@@ -1,5 +1,6 @@
 <script lang="ts">
  import { onMount } from 'svelte';
+ import { base } from '$app/paths';
  import '$lib/google-ui.css';
  import ScopeGuide from '$lib/ScopeGuide.svelte';
  import KnowledgeQuiz from '$lib/KnowledgeQuiz.svelte';
@@ -30,7 +31,10 @@
    {#if logoFailed}
      <span class="logo-fallback">Google for Education</span>
     {:else}
-     <img src="https://teachercenter.withgoogle.com/edu_assets/images/google_for_education_training_center_logo.png" alt="Google for Education" loading="eager" onerror={()=>logoFailed=true}/>
+     <picture>
+      <source media="(max-width: 640px)" srcset={`${base}/brand/logo-google-for-education-vertical.png`}/>
+      <img src={`${base}/brand/logo-google-for-education.png`} alt="Google for Education" loading="eager" decoding="async" onerror={()=>logoFailed=true}/>
+     </picture>
     {/if}
   </div>
   <span class="status">Wersja robocza · do zatwierdzenia</span>
@@ -136,7 +140,18 @@ footer{color:#68778A;line-height:1.65}
 @media print{.hero-visual,.topbar-right,.hero-points,.tile-icon{display:none!important}}
 
 .logo-fallback{font-size:13px;color:#35659c;font-weight:700;line-height:1.3;text-align:center;padding:0 7px}
-.gfe-identity img{object-fit:contain;width:90%;height:90%}
+.gfe-identity{width:239px;height:88px;background:transparent;border:0;overflow:visible;flex:none}
+.gfe-identity picture{display:block;width:100%;height:100%}
+.gfe-identity img{object-fit:contain;display:block;width:100%;height:100%}
+@media(max-width:720px){
+ .topbar{flex-wrap:wrap;gap:4px}
+ .brand{width:100%;min-width:0}
+ .topbar-right{width:100%;justify-content:flex-end}
+ .gfe-identity{width:152px;height:77px}
+}
+@media(max-width:450px){
+ .gfe-identity{width:132px;height:70px}
+}
 .resourcegrid article{border-radius:19px}
 .resourcegrid article:nth-child(4n+1){border-top:4px solid #4285f4}
 .resourcegrid article:nth-child(4n+2){border-top:4px solid #34a853}
