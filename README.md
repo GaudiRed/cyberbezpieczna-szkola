@@ -42,7 +42,7 @@ Repozytorium zawiera workflow `.github/workflows/validate.yml` do kontroli typó
 
 ## Publiczny podgląd
 
-Przygotowano ręcznie uruchamiany workflow `.github/workflows/publish-pages.yml`. Pozwala on opublikować statyczną aplikację w GitHub Pages po skonfigurowaniu repozytorium przez właściciela. Rutynowe zapisy do `main` nie publikują automatycznie nowych wersji, dzięki czemu treści wymagające aktualizacji mogą zostać sprawdzone przed udostępnieniem.
+Workflow `.github/workflows/publish-pages.yml` publikuje statyczną aplikację w GitHub Pages automatycznie po zapisaniu zmian w gałęzi `main`, pod warunkiem włączenia źródła GitHub Actions w ustawieniach Pages. Publikację można też uruchomić ręcznie. Weryfikacja i akceptacja treści odbywa się przed scaleniem propozycji zmian do `main`.
 
 [Instrukcja krok po kroku](docs/PUBLIKACJA_GITHUB_PAGES.md).
 
