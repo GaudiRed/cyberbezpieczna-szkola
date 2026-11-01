@@ -23,7 +23,13 @@ test('Matryca KSC wyszukuje wymaganie, zapisuje status i zachowuje wynik po odś
   await expect(page.locator('.matrix .list button')).toHaveCount(18);
   await page.locator('.matrix .list button').filter({ hasText: 'Pkt 10' }).click();
   await expect(page.getByRole('heading', { name: 'Odseparowane kopie zapasowe' })).toBeVisible();
-  await expect(page.getByText(/Google Vault nie jest kopią zapasową/)).toBeVisible();
+  await expect(page.locator('.matrix .backup-workarounds')).toBeVisible();
+  await expect(page.locator('.matrix .backup-workarounds article')).toHaveCount(3);
+  await expect(page.locator('.backup-workarounds')).toContainText('Eksport i kopia offline');
+  await expect(page.locator('.backup-workarounds')).toContainText('Cloud Storage');
+  await expect(page.locator('.backup-workarounds')).toContainText('Regularny backup');
+  await expect(page.locator('.backup-workarounds')).toContainText('60 dniach');
+  await expect(page.locator('.backup-workarounds a[href="https://knowledge.workspace.google.com/admin/migrate/export-all-your-organizations-data"]')).toHaveCount(1);
   await page.locator('#requirement-status').selectOption('todo');
   await page.screenshot({ path: testInfo.outputPath('wymaganie-10.png'), fullPage: true });
   await page.reload();
@@ -82,7 +88,7 @@ test('Raport do PDF zawiera wymagania KSC i funkcje Google bez elementów nawiga
   await expect(page.locator('.print-source')).toContainText('Data i godzina wydruku:');
   await expect(page.locator('.print-source')).toContainText(new URL(page.url()).origin);
   await expect(page.locator('.audit .print-report')).toContainText('Po stronie szkoły:');
-  await expect(page.locator('.audit .print-report')).toContainText('niezależne, odseparowane kopie zapasowe');
+  await expect(page.locator('.audit .print-report')).toContainText('zaszyfrowanym nośniku odłączanym od komputera');
   const pdf = await page.pdf({ path: testInfo.outputPath('przykladowy-raport.pdf'), format: 'A4', printBackground: true, preferCSSPageSize: true });
   expect(pdf.byteLength).toBeGreaterThan(10_000);
 });
