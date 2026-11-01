@@ -7,7 +7,7 @@
 - Strona wprowadzająca oraz wybór roli i edycji Google Workspace.
 - **Moje obowiązki:** pomoc w uporządkowaniu źródeł prawa, bez automatycznego przypisywania statusu podmiotu KSC.
 - Katalog funkcji Google Workspace for Education i ChromeOS, z filtrami, instrukcjami i informacją o licencjach.
-- **Autodiagnoza:** lokalna lista kontrolna, zapis w przeglądarce, wydruk lub zapis raportu w PDF przez funkcję drukowania.
+- **Autodiagnoza:** lokalna lista kontrolna, zapis w przeglądarce, raport z zadaniami, instrukcjami i źródłami, wydruk lub zapis w PDF przez funkcję drukowania.
 - **Quiz:** pięć pytań edukacyjnych z wyjaśnieniami.
 - Biblioteka źródeł i materiałów Google.
 
@@ -32,7 +32,7 @@ Repozytorium zawiera workflow `.github/workflows/validate.yml` do kontroli typó
 
 ## Publikacja
 
-Projekt jest przygotowany pod GitHub Pages (statyczny SvelteKit, ścieżka bazowa `/cyberbezpieczna-szkola`, plik `static/.nojekyll`). Publikację można włączyć dopiero po weryfikacji merytorycznej, prawnej i produktowej oraz zatwierdzeniu sposobu oznaczenia marki.
+Projekt jest przygotowany pod GitHub Pages (statyczny SvelteKit, ścieżka bazowa `/cyberbezpieczna-szkola`, plik `static/.nojekyll`). Wersję demonstracyjną można rozwijać i testować bez opinii prawnika. Przed przedstawieniem jako oficjalne stanowisko Google/MEN trzeba zweryfikować źródła, status licencji, legalne użycie marki i uzyskać właściwe zatwierdzenia. Nie należy reklamować aplikacji jako certyfikatora zgodności z prawem.
 
 ## Źródła i odpowiedzialność
 
