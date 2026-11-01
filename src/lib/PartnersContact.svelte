@@ -5,8 +5,8 @@
 <section id="partnerzy" class="partners" aria-labelledby="partners-title">
   <div class="intro">
     <div class="eyebrow">WSPARCIE WE WDROŻENIU</div>
-    <h2 id="partners-title">Masz pytania? Porozmawiaj z partnerem Google for Education.</h2>
-    <p>Jeżeli masz pytania lub chcesz wiedzieć więcej, skontaktuj się z wybranym Partnerem Google for Education. Kontakty znajdziesz poniżej:</p>
+    <h2 id="partners-title">Masz pytania? Porozmawiaj z partnerem <span class="keep-together">Google for Education</span>.</h2>
+    <p>Jeżeli masz pytania lub chcesz wiedzieć więcej, skontaktuj się z wybranym Partnerem <span class="keep-together">Google for Education</span>. Kontakty znajdziesz poniżej:</p>
   </div>
 
   <div class="partners-grid">
@@ -37,10 +37,11 @@
 
 <style>
   .partners { scroll-margin-top: 24px; padding: 40px 0 52px; border-top: 1px solid #e2e7ee; }
-  .intro { max-width: 760px; margin-bottom: 26px; }
+  .intro { max-width: 100%; margin-bottom: 26px; }
+  .keep-together { white-space: nowrap; }
   .eyebrow { font-size: 12px; font-weight: 750; letter-spacing: .12em; color: #1967d2; }
-  h2 { color: #202124; font-size: clamp(26px, 3vw, 35px); letter-spacing: -.035em; line-height: 1.25; margin: 11px 0 13px; }
-  .intro p { color: #58677a; line-height: 1.65; margin: 0; }
+  h2 { color: #202124; font-size: clamp(26px, 3vw, 35px); letter-spacing: -.035em; line-height: 1.25; margin: 11px 0 13px; text-wrap: balance; max-width: 1050px; }
+  .intro p { color: #58677a; line-height: 1.65; margin: 0; max-width: 1050px; text-wrap: pretty; }
   .partners-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 15px; }
   .partner-card { background: #fff; border: 1px solid #e0e6ee; border-top: 4px solid #4285f4; border-radius: 17px; padding: 21px; display: flex; flex-direction: column; min-width: 0; box-shadow: 0 5px 23px rgba(28, 61, 105, .035); }
   .partner-card.green { border-top-color: #34a853; }
