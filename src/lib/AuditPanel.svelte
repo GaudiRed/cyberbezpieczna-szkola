@@ -75,7 +75,7 @@
           <div class="description">
             <strong>{feature.title}</strong>
             <span>{tierLabels[feature.tier]}</span>
-            <small>{feature.risk}</small>
+            <small>{feature.help}</small>
           </div>
           <label>
             <span class="visually-hidden">Status: {feature.title}</span>
@@ -90,6 +90,7 @@
       {/each}
     </div>
 
+    <p class="partner-tip">Nie wiesz, czy funkcja jest dostępna albo jak ją włączyć? <a href="#partnerzy">Skontaktuj się z Partnerem Google for Education.</a></p>
     <div class="actions">
       <button class="primary" type="button" onclick={printReport}>Zapisz raport jako PDF / drukuj</button>
     </div>
@@ -127,7 +128,8 @@
     {#each legalItems.filter((item)=>item.state==='done'||item.state==='na') as requirement (requirement.id)}
       <p>Załącznik nr 4, pkt {requirement.point}: {requirement.title}, {labels[requirement.state]}.</p>
     {/each}
-    <h2>Część B. Plan sprawdzenia i działań dotyczących funkcji Google</h2>
+    <h2>Część B. Funkcje Google, które warto sprawdzić</h2>
+    <p>Poniższe funkcje mogą pomóc szkole. Weryfikacja dostępności i ustawień powinna odbyć się z administratorem lub Partnerem Google for Education.</p>
     {#if outstanding.length === 0}
       <p>Wszystkie pozycje oznaczono jako wdrożone lub nie mające zastosowania. Weryfikuj regularnie skuteczność zabezpieczeń.</p>
     {:else}
@@ -137,9 +139,9 @@
           <p><strong>Ryzyko:</strong> {feature.risk}</p>
           <p><strong>Dostępność:</strong> {tierLabels[feature.tier]}</p>
           <p><strong>Powiązanie z przepisami:</strong> {feature.legal}</p>
-          <p><strong>Co sprawdzić lub wykonać:</strong></p>
-          <ol>{#each feature.steps as step}<li>{step}</li>{/each}</ol>
-          <p><strong>Oficjalna instrukcja:</strong> {feature.link}</p>
+          <p><strong>Co daje szkole:</strong> {feature.help}</p>
+          <p><strong>Informacje Google:</strong> {feature.link}</p>
+          <p><strong>Pomoc z konfiguracją:</strong> skontaktuj się z wybranym Partnerem Google for Education.</p>
           <p><strong>Osoba odpowiedzialna:</strong> ................................................................</p>
           <p><strong>Termin:</strong> ................................................</p>
         </article>
@@ -149,6 +151,7 @@
     {#each list.filter((feature) => feature.state === 'done' || feature.state === 'na') as feature (feature.id)}
       <p><strong>{feature.title}</strong>: {labels[feature.state]}</p>
     {/each}
+    <p class="partner-print"><strong>Kontakty partnerów Google for Education:</strong> {printSource}#partnerzy</p>
     <div class="print-warning">
       Raport jest oparty na odpowiedziach osoby wypełniającej, nie na technicznym audycie systemów. Nie stanowi potwierdzenia zgodności z KSC, NIS2 ani RODO. Wymagania KSC należy odczytać zgodnie ze statusem podmiotu i obowiązującymi przepisami. Zakup płatnej funkcji nie jest sam w sobie wymaganiem ustawowym.
     </div>
@@ -172,6 +175,9 @@
   .actions{margin-top:22px}.primary{padding:13px 18px;border-radius:9px;border:0;background:#1c5ebd;color:#fff;font-weight:700;cursor:pointer}
   .disclaimer{font-size:13px}.visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
   .print-report{display:none}
+  .partner-tip{padding:14px 17px;background:#eaf3ff;border:1px solid #dbe9ff;border-radius:13px;font-size:13px}
+  .partner-tip a{font-weight:700;color:#1759b8}
+  .partner-print{overflow-wrap:anywhere}
   .legal-summary{background:#eaf2ff;padding:18px;border-radius:12px;margin-top:24px;border-left:4px solid #2368bf}
   .legal-summary p{margin:7px 0}.legal-summary small{color:#64748b}
   @media(max-width:700px){.stats{grid-template-columns:repeat(2,1fr)}.checkrow{flex-direction:column;align-items:stretch}select{width:100%}}
