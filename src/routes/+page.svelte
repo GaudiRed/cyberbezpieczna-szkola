@@ -1,7 +1,9 @@
 <script lang="ts">
  import { onMount } from 'svelte';
+ import ScopeGuide from '$lib/ScopeGuide.svelte';
+ import KnowledgeQuiz from '$lib/KnowledgeQuiz.svelte';
  import { features, resources, type Feature } from '$lib/content';
- let tab:'start'|'features'|'check'|'resources'='start';
+ let tab:'start'|'law'|'features'|'check'|'quiz'|'resources'='start';
  let search=''; let filter='all'; let active:Feature=features[0];
  let answers:Record<string,string>={};
  let role='dyrektor';let edition='fundamentals';
@@ -15,7 +17,7 @@
 <div class="shell">
 <header><div class="brand"><span class="shield">✦</span><div><strong>Cyberbezpieczna szkoła</strong><small>Praktyczny poradnik Google for Education · wersja robocza</small></div></div><span class="status">Projekt do weryfikacji</span></header>
 <nav aria-label="Nawigacja główna">
-<button class:current={tab==='start'} onclick={()=>tab='start'}>Start</button><button class:current={tab==='features'} onclick={()=>tab='features'}>Zabezpieczenia</button><button class:current={tab==='check'} onclick={()=>tab='check'}>Autodiagnoza</button><button class:current={tab==='resources'} onclick={()=>tab='resources'}>Źródła i kursy</button>
+<button class:current={tab==='start'} onclick={()=>tab='start'}>Start</button><button class:current={tab==='law'} onclick={()=>tab='law'}>Moje obowiązki</button><button class:current={tab==='features'} onclick={()=>tab='features'}>Zabezpieczenia</button><button class:current={tab==='check'} onclick={()=>tab='check'}>Autodiagnoza</button><button class:current={tab==='quiz'} onclick={()=>tab='quiz'}>Quiz</button><button class:current={tab==='resources'} onclick={()=>tab='resources'}>Źródła i kursy</button>
 </nav>
 <main>
 {#if tab==='start'}
@@ -23,6 +25,8 @@
 <div class="notice"><strong>Ważne:</strong> poradnik jest wersją roboczą. Opisane środki techniczne wspierają bezpieczeństwo, ale nie oznaczają automatycznej zgodności z KSC, NIS2 lub RODO. Zakres obowiązków wymaga odrębnej analizy statusu szkoły i organu prowadzącego.</div>
 <div class="tiles"><article><span class="number">01</span><h3>Poznaj zagrożenia</h3><p>Ochrona kont, phishing, dostęp, incydenty i urządzenia.</p></article><article><span class="number">02</span><h3>Sprawdź rozwiązania</h3><p>Funkcje bezpłatne i płatne, instrukcje i źródła Google.</p></article><article><span class="number">03</span><h3>Oceń wdrożenie</h3><p>Zaznacz stan zabezpieczeń i wydrukuj raport.</p></article></div>
 <section class="panel"><h2>Dostosuj sposób przeglądania</h2><div class="formgrid"><label>Moja rola<select bind:value={role}><option value="dyrektor">Dyrektor szkoły</option><option value="admin">Administrator IT</option><option value="organ">Organ prowadzący</option><option value="nauczyciel">Nauczyciel</option></select></label><label>Korzystamy z<select bind:value={edition}><option value="fundamentals">Education Fundamentals</option><option value="plus">Education Plus</option><option value="unknown">Nie wiem / nie korzystamy</option></select></label></div><p class="small">Wybór nie jest prawną kwalifikacją szkoły. Nie przesyłamy tych informacji na serwer.</p><button class="primary" onclick={()=>{filter=edition==='plus'?'all':'fundamentals';tab='features'}}>Przeglądaj funkcje →</button></section>
+{:else if tab==='law'}
+<ScopeGuide />
 {:else if tab==='features'}
 <div class="sectiontitle"><div><div class="eyebrow">KATALOG FUNKCJI</div><h1>Zabezpieczenia Google</h1><p>Wybierz funkcję, aby poznać jej zastosowanie, koszt i czynności po stronie szkoły.</p></div></div>
 <div class="filters"><input aria-label="Szukaj" placeholder="Szukaj funkcji lub zagrożenia…" bind:value={search}/><select aria-label="Dostępność" bind:value={filter}><option value="all">Wszystkie funkcje</option><option value="fundamentals">Education Fundamentals</option><option value="plus">Education Plus</option><option value="chromeos">ChromeOS</option></select></div>
@@ -30,6 +34,8 @@
 {:else if tab==='check'}
 <div class="eyebrow">SAMOOCENA</div><h1>Sprawdź stan zabezpieczeń</h1><p>Oceń wyłącznie te funkcje, których stosowanie jest uzasadnione w Twojej szkole. Odpowiedzi zapisują się lokalnie w tej przeglądarce.</p><div class="summary"><strong>{completed} / {features.length}</strong><span>funkcji oznaczonych jako wdrożone i sprawdzone</span></div><div class="progress"><div style:width={100*completed/features.length+'%'}></div></div>
 <div class="checklist">{#each features as f}<div class="checkrow"><div><strong>{f.title}</strong><small>{f.risk}</small></div><select aria-label={'Stan '+f.title} value={answers[f.id]||'unknown'} onchange={e=>answer(f.id,e.currentTarget.value)}><option value="unknown">Nie wiem / nie sprawdzono</option><option value="done">Wdrożone i sprawdzone</option><option value="todo">Wymaga działania</option><option value="na">Nie dotyczy</option></select></div>{/each}</div><div class="actions"><button class="primary" onclick={printReport}>Drukuj / Zapisz jako PDF</button><button class="secondary" onclick={()=>tab='features'}>Otwórz instrukcje</button></div><p class="small">Wynik nie jest audytem prawnym ani automatycznym testem konfiguracji Google Workspace.</p>
+{:else if tab==='quiz'}
+<KnowledgeQuiz />
 {:else}
 <div class="eyebrow">MATERIAŁY ŹRÓDŁOWE</div><h1>Oficjalne dokumenty i szkolenia</h1><p>Bezpośrednie odnośniki do Google i polskiego publikatora prawa.</p><div class="resourcegrid">{#each resources as r}<article><small>{r.access}</small><h2>{r.title}</h2><p>{r.detail}</p><a target="_blank" rel="noopener noreferrer" href={r.url}>Otwórz źródło ↗</a></article>{/each}</div>
 {/if}
