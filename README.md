@@ -1,6 +1,6 @@
 # Cyberbezpieczna szkoła
 
-**Wersja robocza interaktywnego poradnika** dla szkół i organów prowadzących. Projekt nie stanowi opinii prawnej ani oficjalnego stanowiska Google for Education lub MEN.
+**Wersja robocza interaktywnego poradnika** dla szkół i organów prowadzących. Treści informacyjne nie stanowią opinii prawnej.
 
 ## Co jest już dostępne?
 
