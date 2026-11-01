@@ -25,7 +25,7 @@
   {#if kscStatus==='confirmed'}
    <p><strong>KSC:</strong> wskazano, że status jest potwierdzony. Zweryfikuj kategorię podmiotu, właściwy organ, terminy i zakres obowiązków na podstawie aktualnego prawa oraz dokumentacji podmiotu.</p>
   {:else}
-   <p><strong>KSC:</strong> status podmiotu wymaga ustalenia. Sam fakt, że placówka jest {schoolType==='public'?'publiczna':'niepubliczna lub innego rodzaju'}, nie wystarcza do przypisania jej wszystkich obowiązków KSC. Ustal status z organem prowadzącym i właściwym zespołem prawnym.</p>
+   <p><strong>KSC:</strong> status podmiotu wymaga ustalenia. Sam fakt, że placówka jest {schoolType==='public'?'publiczna':'niepubliczna lub innego rodzaju'}, nie wystarcza do przypisania jej wszystkich obowiązków KSC. Zweryfikuj status w przepisach i oficjalnych wyjaśnieniach Ministerstwa Cyfryzacji oraz ustal zakres odpowiedzialności z organem prowadzącym. Przy niepewności pozostaw status jako „nieustalony”.</p>
   {/if}
   {#if ownerType==='jst'}
    <p><strong>Organ prowadzący:</strong> ustal, za które systemy i procesy odpowiada szkoła, a które zabezpieczenia i procedury są organizowane przez JST.</p>
@@ -39,7 +39,7 @@
  </div>
  <h2>Źródła do sprawdzenia</h2>
  <ul>{#each sources as s}<li><a href={s.url} target="_blank" rel="noopener noreferrer">{s.title} ↗</a></li>{/each}</ul>
- <p class="foot">Stan odniesienia: 1 listopada 2026 r. Opisy są informacyjne i nie zastępują kwalifikacji prawnej konkretnego podmiotu. Wersja robocza nie jest stanowiskiem MEN ani Google.</p>
+ <p class="foot">Stan odniesienia: 1 listopada 2026 r. Opisy są informacyjne i nie zastępują kwalifikacji prawnej konkretnego podmiotu. Wersja robocza nie jest stanowiskiem MEN ani Google. Nie wymaga wydawania formalnej opinii prawnej do przeprowadzenia autodiagnozy, ale nie stanowi wiążącej kwalifikacji podmiotu.</p>
 </section>
 <style>
 .scope{max-width:1030px}.eyebrow{font-size:12px;letter-spacing:2px;color:#2863b8;font-weight:800}h1{font-size:clamp(30px,4vw,44px);letter-spacing:-1.3px}h2{font-size:22px;margin-top:28px}p{color:#556780;line-height:1.65}.form{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;background:white;border:1px solid #e1e7ef;padding:20px;border-radius:14px}.form label{font-weight:700;font-size:13px}.form select{display:block;width:100%;margin-top:9px;background:white;border:1px solid #cbd5e1;border-radius:8px;padding:10px;color:#26374d}.outcome{background:#eaf2ff;border-left:4px solid #2863b8;padding:10px 22px;margin:20px 0;border-radius:10px}.outcome h2{margin-top:12px}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.cards article{padding:20px;background:white;border-radius:13px;border:1px solid #dee6ef}.cards span{color:#2863b8;font-size:12px;font-weight:800}.cards h3{margin:12px 0}.cards p{font-size:14px}.cards a,li a{color:#175ab7}li{margin:10px 0}.foot{font-size:12px;margin-top:25px}@media(max-width:760px){.form,.cards{grid-template-columns:1fr}}

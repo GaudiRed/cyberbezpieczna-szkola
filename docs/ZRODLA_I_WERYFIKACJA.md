@@ -25,12 +25,12 @@ To jest **wewnętrzny** rejestr twierdzeń i źródeł pierwszej wersji aplikacj
 
 ## Kontrole redakcyjne wymagane przed publikacją
 
-- [ ] Prawnik potwierdzi przyporządkowanie konkretnych obowiązków KSC do kategorii szkół i JST.
+- [ ] Każde przypisanie obowiązku prawnego ma bezpośrednie odwołanie do aktualnego przepisu i wskazany status: potwierdzony dla opisanej kategorii / warunkowy / do indywidualnego ustalenia.\n- [ ] Jeśli źródło nie pozwala na jednoznaczne przypisanie obowiązku, materiał nie formułuje kategorycznej oceny zgodności. Zewnętrzna opinia prawna jest możliwa, ale nie jest warunkiem tworzenia prototypu.
 - [ ] Aktualne wersje funkcji i licencji zostaną zweryfikowane na oficjalnej stronie porównawczej Google.
 - [ ] Linki zostaną ponownie sprawdzone automatycznie lub ręcznie.
 - [ ] Zespół Google zatwierdzi oznaczenia marki oraz treść oficjalnych deklaracji.
-- [ ] MEN zatwierdzi sposób wykorzystania materiału oraz zastrzeżenia prawne.
-- [ ] Zostanie wykonany test dostępności, funkcji autodiagnozy i eksportu PDF.
+- [ ] Przed występowaniem jako oficjalny materiał MEN, ministerstwo zatwierdzi użycie materiału i sposób przedstawienia odpowiedzialności prawnej.
+- [ ] Zostanie wykonany test dostępności, funkcji autodiagnozy i raportu drukowanego do PDF.
 
 ## Zasady treści
 
