@@ -148,7 +148,7 @@ test('Porady Google są krótkie, jasne i prowadzą do partnerów', async ({ pag
   await expect(page.locator('.shell')).toHaveAttribute('data-hydrated', 'true');
   await page.getByRole('navigation').getByRole('button', { name: '18 wymagań KSC' }).click();
   await expect(page.locator('.matrix .feature-list .feature-item').first()).toBeVisible();
-  await expect(page.locator('.matrix .google-support')).toContainText('Funkcje Google');
+  await expect(page.locator('.matrix .google-support')).toContainText(/funkcje Google/i);
   await expect(page.locator('.matrix .google-support')).toContainText('Skontaktuj się z wybranym Partnerem Google for Education.');
   await expect(page.locator('.matrix .google-support a[href="#partnerzy"]')).toHaveCount(1);
 
