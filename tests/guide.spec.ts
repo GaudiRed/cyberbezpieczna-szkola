@@ -133,7 +133,7 @@ test('Wszystkie 18 wymagań KSC ma krótką listę konkretnych działań', async
     await expect(checklist).toContainText('Co zachować jako potwierdzenie?');
   }
   await items.first().click();
-  await expect(page.locator('.matrix .quick-actions')).toContainText('Sprawdź listę kont i administratorów');
+  await expect(page.locator('.matrix .quick-actions')).toContainText('W Arkuszach Google przygotuj wspólny rejestr sprzętu');
   await expect(page.locator('.matrix .partner-help')).toContainText('Partnerem Google for Education');
 });
 
