@@ -1,9 +1,30 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import { features, type Feature } from '$lib/content';
   import { annexRequirements, LEGAL_SOURCE, matchedFeatures } from '$lib/requirements';
 
   export let answers: Record<string, string> = {};
   export let updateAnswer: (id: string, status: string) => void;
+
+  let printSource = '';
+  let printDate = '';
+  function refreshPrintInfo(): void {
+    if (typeof window === 'undefined') return;
+    printSource = window.location.origin + window.location.pathname;
+    printDate = new Intl.DateTimeFormat('pl-PL', {
+      dateStyle: 'long',
+      timeStyle: 'short'
+    }).format(new Date());
+  }
+  function printReport(): void {
+    refreshPrintInfo();
+    window.print();
+  }
+  onMount(() => {
+    refreshPrintInfo();
+    window.addEventListener('beforeprint', refreshPrintInfo);
+    return () => window.removeEventListener('beforeprint', refreshPrintInfo);
+  });
 
   const labels: Record<string, string> = {
     done: 'Wdrożone i sprawdzone',
@@ -70,7 +91,7 @@
     </div>
 
     <div class="actions">
-      <button class="primary" type="button" onclick={() => window.print()}>Zapisz raport jako PDF / drukuj</button>
+      <button class="primary" type="button" onclick={printReport}>Zapisz raport jako PDF / drukuj</button>
     </div>
     <p class="disclaimer">Odpowiedzi zapisują się wyłącznie w tej przeglądarce. Nie sprawdzamy automatycznie konfiguracji konsoli Google. Liczba pozycji „sprawdzone” nie jest oceną zgodności z prawem.</p>
   </div>
@@ -78,7 +99,12 @@
   <div class="print-report">
     <header>
       <h1>Raport autodiagnozy cyberbezpieczeństwa szkoły</h1>
-      <p>Lista deklarowanych zabezpieczeń i proponowanych działań. Stan na dzień wydruku. Wersja robocza.</p>
+      <p>Lista deklarowanych zabezpieczeń i proponowanych działań. Stan na dzień wydruku.</p>
+      <div class="print-source">
+        <p><strong>Wydrukowano z:</strong> Cyberbezpieczna szkoła z Google for Education</p>
+        <p><strong>Adres poradnika:</strong> {printSource}</p>
+        <p><strong>Data i godzina wydruku:</strong> {printDate}</p>
+      </div>
     </header>
     <h2>Podsumowanie odpowiedzi</h2>
     <p>Wdrożone i sprawdzone: <strong>{doneCount}</strong> · Wymaga działania: <strong>{todoCount}</strong> · Nie sprawdzono: <strong>{unknownCount}</strong> · Nie dotyczy: <strong>{naCount}</strong></p>
@@ -91,7 +117,8 @@
         <p><strong>Co należy sprawdzić:</strong> {requirement.schoolAction}</p>
         <p><strong>Potwierdzenie realizacji:</strong> {requirement.evidence}</p>
         <p><strong>Wsparcie Google:</strong> {matchedFeatures(requirement).length ? matchedFeatures(requirement).map((item)=>item.title).join(', ') : 'Niezależne działania szkoły lub inne narzędzia'}</p>
-        <p><strong>Ograniczenia:</strong> {requirement.limit}</p>
+        <p><strong>Ograniczenie:</strong> {requirement.limit}</p>
+        <p class="remedy"><strong>Co zrobić w tej sytuacji:</strong> {requirement.resolution}</p>
         <p><strong>Źródło prawa:</strong> {LEGAL_SOURCE} (załącznik nr 4, część I, pkt {requirement.point})</p>
         <p><strong>Osoba odpowiedzialna:</strong> ........................................ <strong>Termin:</strong> ...........................</p>
       </article>
@@ -154,6 +181,9 @@
     .print-report h3{font-size:15px}.print-report h3 small{font-size:12px;font-weight:normal}
     .print-report p,.print-report li{font-size:11px;line-height:1.5;color:#111;overflow-wrap:anywhere}
     .report-entry{border-bottom:1px solid #aaa;padding:12px 0;break-inside:avoid}
+    .print-source{border:1px solid #d8e5f5;background:#f5f9ff;border-radius:8px;padding:8px 13px;margin-top:14px}
+    .print-source p{margin:2px 0;font-size:11px;color:#202124}
+    .report-entry .remedy{background:#f1f8f4;border-left:3px solid #34a853;padding:7px 10px}
     .print-warning{font-size:10px;padding:12px;border:1px solid #777;margin-top:25px}
   }
 </style>

@@ -7,6 +7,7 @@
  import AuditPanel from '$lib/AuditPanel.svelte';
  import AnnexMatrix from '$lib/AnnexMatrix.svelte';
  import SecurityArtwork from '$lib/SecurityArtwork.svelte';
+ import PartnersContact from '$lib/PartnersContact.svelte';
  import { features, resources, type Feature } from '$lib/content';
  let tab:'start'|'law'|'matrix'|'features'|'check'|'quiz'|'resources'='start';
  let search=''; let filter='all'; let active:Feature=features[0];
@@ -41,7 +42,7 @@
  </div>
 </header>
 <nav aria-label="Nawigacja główna">
-<button class:current={tab==='start'} onclick={()=>tab='start'}>Start</button><button class:current={tab==='law'} onclick={()=>tab='law'}>Moje obowiązki</button><button class:current={tab==='matrix'} onclick={()=>tab='matrix'}>18 wymagań KSC</button><button class:current={tab==='features'} onclick={()=>tab='features'}>Zabezpieczenia</button><button class:current={tab==='check'} onclick={()=>tab='check'}>Autodiagnoza</button><button class:current={tab==='quiz'} onclick={()=>tab='quiz'}>Quiz</button><button class:current={tab==='resources'} onclick={()=>tab='resources'}>Źródła i kursy</button>
+<button class:current={tab==='start'} onclick={()=>tab='start'}>Start</button><button class:current={tab==='law'} onclick={()=>tab='law'}>Moje obowiązki</button><button class:current={tab==='matrix'} onclick={()=>tab='matrix'}>18 wymagań KSC</button><button class:current={tab==='features'} onclick={()=>tab='features'}>Zabezpieczenia</button><button class:current={tab==='check'} onclick={()=>tab='check'}>Autodiagnoza</button><button class:current={tab==='quiz'} onclick={()=>tab='quiz'}>Quiz</button><button class:current={tab==='resources'} onclick={()=>tab='resources'}>Źródła i kursy</button><a class="nav-partners" href="#partnerzy">Partnerzy</a>
 </nav>
 <main>
 {#if tab==='start'}
@@ -81,7 +82,9 @@
 {:else}
 <div class="eyebrow">MATERIAŁY ŹRÓDŁOWE</div><h1>Oficjalne dokumenty i szkolenia</h1><p>Materiały do wdrożenia, edukacji i weryfikacji działań. Bezpłatne zasoby Google i oficjalne dokumenty.</p><div class="resourcegrid">{#each resources as r}<article><small>{r.access}</small><h2>{r.title}</h2><p>{r.detail}</p><a target="_blank" rel="noopener noreferrer" href={r.url}>Otwórz źródło ↗</a></article>{/each}</div>
 {/if}
-</main><footer><strong>Cyberbezpieczna szkoła</strong><span>Praktyczny poradnik cyberbezpieczeństwa z wykorzystaniem Google for Education.</span></footer></div>
+</main>
+<PartnersContact />
+<footer><strong>Cyberbezpieczna szkoła</strong><span>Praktyczny poradnik cyberbezpieczeństwa z wykorzystaniem Google for Education.</span></footer></div>
 <style>
 :global(*){box-sizing:border-box}:global(body){margin:0;background:#f5f7fb;color:#17243d;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif}:global(button),:global(select),:global(input){font:inherit}:global(button){cursor:pointer}.shell{max-width:1200px;margin:auto;padding:0 24px}header{display:flex;justify-content:space-between;align-items:center;padding:25px 0;border-bottom:1px solid #e4e8ef}.brand{display:flex;align-items:center;gap:12px}.brand strong,.brand small{display:block}.brand strong{font-size:19px}.brand small{font-size:12px;color:#69768b;margin-top:3px}.shield{display:grid;place-items:center;background:#1b66cc;border-radius:13px;width:46px;height:46px;color:#fff;font-size:30px}.status,.tag{font-size:12px;border-radius:999px;background:#e8f0fe;color:#2153a3;padding:8px 12px}nav{display:flex;gap:7px;border-bottom:1px solid #e4e8ef;padding:12px 0;overflow:auto}nav button{border:0;background:transparent;color:#55647a;padding:12px 17px;border-radius:9px;white-space:nowrap}nav button.current{background:#e6efff;color:#1756b9;font-weight:700}main{padding:38px 0 70px;min-height:65vh}h1{font-size:clamp(30px,4vw,48px);line-height:1.12;letter-spacing:-1.5px;margin:12px 0 17px}h2{font-size:22px;letter-spacing:-.5px}h3{font-size:15px;margin:24px 0 8px}p{line-height:1.65;color:#596982}.hero{background:linear-gradient(120deg,#eaf2ff,#fff);border:1px solid #dfe9f8;padding:48px;border-radius:22px;max-width:100%}.hero h1{max-width:720px}.hero p{max-width:680px;font-size:17px}.eyebrow{font-weight:800;color:#2863b8;letter-spacing:2px;font-size:12px}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}.primary,.secondary{border-radius:9px;padding:13px 18px;font-weight:700;border:1px solid #1c5ebd}.primary{background:#1c5ebd;color:white}.secondary{background:white;color:#2058aa}.notice{padding:18px 22px;border-left:4px solid #e0a32b;background:#fff9e9;margin:24px 0;color:#715829;line-height:1.6}.tiles,.resourcegrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.tiles article,.resourcegrid article,.panel,.detail{background:white;border:1px solid #e2e7ef;border-radius:15px;padding:24px}.number{font-size:13px;color:#2162b5;font-weight:800}.panel{margin-top:24px}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.formgrid label{font-weight:700;font-size:14px}.formgrid select{display:block;margin:9px 0 15px;width:100%}.small{font-size:12px;color:#69768b}select,input{background:white;border:1px solid #cbd5e1;border-radius:9px;padding:12px;color:#24324c}.filters{display:flex;gap:12px;margin:24px 0}.filters input{flex:1}.catalog{display:grid;grid-template-columns:330px 1fr;gap:20px}.entries{display:flex;flex-direction:column;gap:8px}.entries button{text-align:left;border:1px solid #dfe5ef;border-radius:12px;padding:17px;background:white;color:#192c47}.entries button.selected{background:#e9f2ff;border-color:#3182d9}.entries small,.checkrow small{display:block;font-size:12px;color:#708198;margin-top:7px;line-height:1.5}.detail ol{line-height:1.8;color:#53657c;padding-left:21px}.detail a,.resourcegrid a{color:#175ebf;font-weight:700;text-decoration:none}.answer{display:flex;justify-content:space-between;align-items:center;background:#f1f6fd;border-radius:10px;padding:14px;margin-top:25px;gap:12px}.summary{display:flex;align-items:center;gap:15px;background:#e8f0ff;border-radius:12px;padding:22px;margin:24px 0 12px}.summary strong{font-size:29px}.progress{height:9px;background:#e1e8f2;border-radius:99px;overflow:hidden}.progress div{height:100%;background:#2b73d2}.checklist{margin-top:20px}.checkrow{display:flex;justify-content:space-between;align-items:center;padding:17px 12px;border-bottom:1px solid #dfe6f0;gap:15px}.resourcegrid article{min-height:210px}.resourcegrid small{color:#2869a9;font-weight:700}footer{border-top:1px solid #e1e8f0;padding:26px 0;display:flex;justify-content:space-between;gap:20px;color:#69768b;font-size:12px}footer strong{color:#17243d}@media(max-width:720px){.shell{padding:0 14px}header{align-items:flex-start;gap:8px}.status{display:none}.hero{padding:25px}.tiles,.resourcegrid,.formgrid,.catalog{grid-template-columns:1fr}.filters,.answer,.checkrow,footer{flex-direction:column;align-items:stretch}.catalog{gap:13px}main{padding-top:25px}}@media print{header,nav,.actions,.filters,footer,.entries,.notice{display:none!important}body{background:white}.shell{max-width:none}.catalog{display:block}}
 
@@ -169,4 +172,10 @@ footer{color:#68778A;line-height:1.65}
 .catalog .answer strong{font-size:13px}
 .catalog .answer select{max-width:100%}
 @media(max-width:720px){.catalog .entries{max-height:330px;overflow-y:auto}.catalog .answer{align-items:stretch}}
+nav .nav-partners{
+ display:inline-flex;align-items:center;color:#5f6368;padding:11px 17px;border-radius:100px;text-decoration:none;
+ font-size:13px;font-weight:600;white-space:nowrap;
+}
+nav .nav-partners:hover{background:#f0f4fa}
+nav .nav-partners:focus-visible{outline:3px solid #4285f4;outline-offset:3px}
 </style>

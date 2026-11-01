@@ -77,6 +77,12 @@ test('Raport do PDF zawiera wymagania KSC i funkcje Google bez elementów nawiga
   await expect(page.locator('.audit .print-report')).toContainText('Część A. Realizacja wymagań KSC');
   await expect(page.locator('.audit .print-report')).toContainText('Część B. Plan sprawdzenia i działań');
   await expect(page.locator('.audit .print-report')).toContainText('Odseparowane kopie zapasowe');
+  await expect(page.locator('.print-source')).toContainText('Wydrukowano z:');
+  await expect(page.locator('.print-source')).toContainText('Cyberbezpieczna szkoła z Google for Education');
+  await expect(page.locator('.print-source')).toContainText('Data i godzina wydruku:');
+  await expect(page.locator('.print-source')).toContainText(new URL(page.url()).origin);
+  await expect(page.locator('.audit .print-report')).toContainText('Co zrobić w tej sytuacji:');
+  await expect(page.locator('.audit .print-report')).toContainText('niezależne rozwiązanie kopii zapasowych');
   const pdf = await page.pdf({ path: testInfo.outputPath('przykladowy-raport.pdf'), format: 'A4', printBackground: true, preferCSSPageSize: true });
   expect(pdf.byteLength).toBeGreaterThan(10_000);
 });
@@ -97,4 +103,42 @@ test('Logo Google for Education ma poprawny wariant na komputerze i telefonie', 
   const horizontalOverflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
   expect(horizontalOverflow).toBeLessThanOrEqual(2);
   await page.screenshot({ path: testInfo.outputPath('logo-google-for-education.png'), fullPage: false });
+});
+
+
+test('Ograniczenie w matrycy KSC nigdy nie pozostaje bez praktycznej odpowiedzi', async ({ page }) => {
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('.shell')).toHaveAttribute('data-hydrated', 'true');
+  await page.getByRole('navigation').getByRole('button', { name: '18 wymagań KSC' }).click();
+  const list = page.locator('.matrix .list button');
+  await expect(list).toHaveCount(18);
+  for (let n = 1; n <= 18; n++) {
+    await list.filter({ hasText: new RegExp('Pkt ' + n + '(\\D|$)') }).click();
+    const solution = page.locator('.matrix .details .limitation');
+    await expect(solution).toContainText('Co zrobić w tej sytuacji?');
+    await expect(solution.locator('p')).toHaveCount(2);
+    const resolution = await solution.locator('p').last().innerText();
+    expect(resolution.trim().length).toBeGreaterThan(65);
+  }
+  await list.filter({ hasText: /Pkt 1(?!\d)/ }).click();
+  await expect(page.locator('.matrix .details .limitation')).toContainText('Arkuszach Google');
+});
+
+test('Favicon Google oraz kontakty czterech partnerów są dostępne na komputerze i telefonie', async ({ page }) => {
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('.shell')).toHaveAttribute('data-hydrated', 'true');
+  await expect(page.locator('link[rel="icon"]')).toHaveAttribute('href', 'https://www.google.com/favicon.ico');
+  const section = page.locator('#partnerzy');
+  await expect(section).toBeVisible();
+  await expect(section.locator('article.partner-card')).toHaveCount(4);
+  for (const name of ['GoCloud Polska sp. z o.o.', 'CCT Poland', 'MScloud', 'Buena Cloud']) {
+    await expect(section.getByRole('heading', { name })).toBeVisible();
+  }
+  await expect(section.locator('a[href="tel:+48222035551"]')).toBeVisible();
+  await expect(section.locator('a[href="mailto:i.zakharchenko@cctpoland.com"]')).toBeVisible();
+  await expect(section.locator('a[href="https://buenacloud.pl"]')).toBeVisible();
+  await page.getByRole('link', { name: 'Partnerzy', exact: true }).click();
+  await expect(page).toHaveURL(/#partnerzy$/);
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+  expect(overflow).toBeLessThanOrEqual(2);
 });
