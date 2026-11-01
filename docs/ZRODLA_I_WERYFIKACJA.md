@@ -12,6 +12,16 @@ To jest **wewnętrzny** rejestr twierdzeń i źródeł pierwszej wersji aplikacj
 | Obowiązki podmiotów kluczowych i ważnych | https://www.gov.pl/web/cyfryzacja/nowelizacja-ustawy-o-krajowym-systemie-cyberbezpieczenstwa-ksc---obowiazki-podmiotow-kluczowych-i-waznych | Terminy i obowiązki tylko dla podmiotów właściwie zakwalifikowanych |
 | RODO (art. 5, 28, 32) | https://eur-lex.europa.eu/legal-content/PL/TXT/?uri=CELEX:32016R0679 | Źródło wymagań dotyczących ochrony danych |
 
+## KSC: publiczne szkoły i przedszkola oraz załącznik nr 4
+
+Ministerstwo Cyfryzacji w FAQ (pytanie 1.16) wskazuje, że szkoły publiczne i przedszkola będące jednostkami budżetowymi są podmiotami KSC. Dla podmiotu ważnego będącego podmiotem publicznym art. 8 ust. 3 ustawy wskazuje uproszczony system zarządzania bezpieczeństwem informacji z załącznika nr 4. Część I załącznika obejmuje 18 podstawowych wymagań, część II rozwiązania fakultatywne, część III przeglądy, a część IV dokumentowanie realizacji działań.
+
+- Źródło ustawy: https://eli.gov.pl/eli/DU/2026/252/ogl
+- Oryginalny załącznik nr 4, strony 102–103: https://eli.gov.pl/api/acts/DU/2026/252/text/T/D20260252L.pdf#page=102
+- Ministerstwo Cyfryzacji, FAQ: https://cyber.gov.pl/assets/pdf/faq-ksc.pdf (pyt. 1.16)
+
+**Zasada redakcyjna:** karta wymogu zawiera parafrazę, a nie skrócony cytat podany jako dosłowne brzmienie prawa. Dokładne brzmienie zawsze sprawdzamy w oryginalnym akcie. Każda funkcja Google jest środkiem wspierającym, nie dowodem zgodności. Szczególnie: Vault ≠ odseparowany backup; zabezpieczenia ChromeOS ≠ antywirus na każdym urządzeniu; narzędzia dochodzeniowe Google ≠ obowiązkowe zgłoszenie incydentu.
+
 ## Oficjalne źródła Google
 
 | Temat | Oficjalny dokument | Uwaga |
