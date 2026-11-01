@@ -25,10 +25,14 @@ test('Matryca KSC wyszukuje wymaganie, zapisuje status i zachowuje wynik po odś
   await expect(page.getByRole('heading', { name: 'Odseparowane kopie zapasowe' })).toBeVisible();
   await expect(page.locator('.matrix .backup-workarounds')).toBeVisible();
   await expect(page.locator('.matrix .backup-workarounds article')).toHaveCount(3);
-  await expect(page.locator('.backup-workarounds')).toContainText('Eksport i kopia offline');
+  await expect(page.locator('.backup-workarounds')).toContainText('Eksport + kopia odłączona od sieci');
   await expect(page.locator('.backup-workarounds')).toContainText('Cloud Storage');
-  await expect(page.locator('.backup-workarounds')).toContainText('Regularny backup');
+  await expect(page.locator('.backup-workarounds')).toContainText('Regularne kopie i łatwe odtwarzanie');
   await expect(page.locator('.backup-workarounds')).toContainText('60 dniach');
+  await expect(page.locator('.backup-workarounds')).toContainText('30 dni');
+  await expect(page.locator('.backup-workarounds')).toContainText('Assured Controls');
+  await expect(page.locator('.backup-workarounds')).toContainText('separacji fizycznej i logicznej');
+  await expect(page.locator('.backup-law a[href*="gov.pl/attachment/"]')).toHaveCount(1);
   await expect(page.locator('.backup-workarounds a[href="https://knowledge.workspace.google.com/admin/migrate/export-all-your-organizations-data"]')).toHaveCount(1);
   await page.locator('#requirement-status').selectOption('todo');
   await page.screenshot({ path: testInfo.outputPath('wymaganie-10.png'), fullPage: true });
@@ -83,6 +87,8 @@ test('Raport do PDF zawiera wymagania KSC i funkcje Google bez elementów nawiga
   await expect(page.locator('.audit .print-report')).toContainText('Część A. Realizacja wymagań KSC');
   await expect(page.locator('.audit .print-report')).toContainText('Część B. Funkcje Google, które warto sprawdzić');
   await expect(page.locator('.audit .print-report')).toContainText('Odseparowane kopie zapasowe');
+  await expect(page.locator('.audit .print-report')).toContainText('Google Data Export:');
+  await expect(page.locator('.audit .print-report')).toContainText('FAQ, odpowiedź 3.41');
   await expect(page.locator('.print-source')).toContainText('Wydrukowano z:');
   await expect(page.locator('.print-source')).toContainText('Cyberbezpieczna szkoła z Google for Education');
   await expect(page.locator('.print-source')).toContainText('Data i godzina wydruku:');
@@ -180,4 +186,28 @@ test('Nagłówek partnerów nie rozrywa frazy Google for Education', async ({ pa
   }
   const overflowing=await page.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
   expect(overflowing).toBeLessThanOrEqual(2);
+});
+
+
+test('Szkoła ma wykonalny plan oparty o Google także tam, gdzie samo Google nie wystarczy', async ({ page }) => {
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('.shell')).toHaveAttribute('data-hydrated','true');
+  await page.getByRole('navigation').getByRole('button',{name:'18 wymagań KSC'}).click();
+  const cases=[
+    {point:1,title:'Rejestr sprzętu i usług w Arkuszach Google'},
+    {point:11,title:'Kalendarz Google + protokół w Arkuszach'},
+    {point:12,title:'Formularz Google + ograniczony rejestr incydentów'},
+    {point:13,title:'Chromebooki + rejestr ochrony pozostałych urządzeń'},
+    {point:15,title:'Arkusze + przypomnienia przed końcem wsparcia'},
+    {point:17,title:'Bezpłatne materiały Google + test wiedzy'},
+    {point:18,title:'Formularz, Arkusz i osobny kanał alarmowy'}
+  ];
+  const list=page.locator('.matrix .list button');
+  for(const item of cases){
+    await list.nth(item.point-1).click();
+    const bridge=page.locator('.matrix .google-bridge');
+    await expect(bridge).toContainText(item.title);
+    await expect(bridge).toContainText('Co jeszcze jest potrzebne:');
+    await expect(bridge.locator('a')).toHaveAttribute('href',/^https:\/\//);
+  }
 });
