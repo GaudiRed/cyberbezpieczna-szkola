@@ -17,7 +17,7 @@
  };
  $: visible = annexRequirements.filter((r) =>
    (area==='Wszystkie'||r.area===area)&&
-   (!showOnlyOpen||answers['annex:'+r.id]!=='done')&&
+   (!showOnlyOpen||!['done','na'].includes(answers['annex:'+r.id]||'unknown'))&&
    (r.title+' '+r.summary+' '+r.point).toLocaleLowerCase('pl').includes(query.toLocaleLowerCase('pl'))
  );
  $: completed = annexRequirements.filter((r)=>answers['annex:'+r.id]==='done').length;
@@ -91,7 +91,7 @@
   </article>
  </div>
  <div class="disclaimer">
-  <strong>Zakres:</strong> przedstawiamy obowiązki z części I załącznika nr 4, a nie wszystkie przepisy KSC. W części II załącznika są rozwiązania dodatkowe, natomiast część III wymaga okresowych przeglądów, a część IV dokumentowania działań. Funkcje Google mają charakter wspierający i nie zastępują systemu zarządzania bezpieczeństwem informacji.
+  <strong>Zakres:</strong> przedstawiamy obowiązki z części I załącznika nr 4, a nie wszystkie przepisy KSC. W części II załącznika są rozwiązania dodatkowe, natomiast część III przewiduje przegląd co najmniej raz w roku lub w sytuacjach wskazanych w przepisie, a część IV dokumentowanie realizacji działań. Funkcje Google mają charakter wspierający i nie zastępują systemu zarządzania bezpieczeństwem informacji.
  </div>
 </section>
 <style>
