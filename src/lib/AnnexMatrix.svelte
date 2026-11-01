@@ -1,6 +1,7 @@
 <script lang="ts">
  import { annexRequirements, matchedFeatures, LEGAL_SOURCE, ANNEX_PDF, MINISTRY_FAQ, type Requirement } from '$lib/requirements';
  import type { Feature } from '$lib/content';
+ import { practicalAdvice } from '$lib/practicalAdvice';
  export let answers: Record<string,string> = {};
  export let updateAnswer: (id:string, value:string)=>void;
  let area='Wszystkie';
@@ -66,29 +67,79 @@
     <div class="meta"><span>Załącznik nr 4 · część I · pkt {selected.point}</span><span>{selected.area}</span></div>
     <h2>{selected.title}</h2>
     <div class="section"><h3>Co wynika z przepisu?</h3><p>{selected.summary}</p><a href={ANNEX_PDF} target="_blank" rel="noopener noreferrer">Otwórz oficjalny tekst przepisu w Dzienniku Ustaw ↗</a></div>
-    <div class="section google-support">
-      <h3>Jakie funkcje Google mogą pomóc?</h3>
-      <p>Oto funkcje, które warto znać. Nie oznacza to, że szkoła musi kupić każdą z nich.</p>
-      {#if matchedFeatures(selected).length===0}
-        <p class="alert">W tym obszarze najważniejsze są działania organizacyjne lub osobne rozwiązanie, np. do wykonywania kopii zapasowych.</p>
-      {:else}
-        <ul class="feature-list">
-          {#each matchedFeatures(selected) as feature (feature.id)}
-            <li class="feature-item">
-              <strong>{feature.title}</strong>
-              <span class="edition">{tierLabel[feature.tier]}</span>
-              <p>{feature.help}</p>
-              <a href={feature.link} target="_blank" rel="noopener noreferrer">Więcej o funkcji w Google ↗</a>
-            </li>
-          {/each}
-        </ul>
+    <div class="quick-actions" aria-label="Konkretne kroki">
+      <h3>Co zrobić? Krótka lista</h3>
+      {#if practicalAdvice[selected.id].google.length}
+        <div class="quick-group">
+          <strong>W Google for Education</strong>
+          <ul class="todo-list">
+            {#each practicalAdvice[selected.id].google as step}
+              <li><span class="checkmark" aria-hidden="true"></span><span>{step}</span></li>
+            {/each}
+          </ul>
+        </div>
       {/if}
-      <p class="partner-help">Nie wiesz, czy szkoła ma te funkcje lub jak je uruchomić? <a href="#partnerzy">Skontaktuj się z wybranym Partnerem Google for Education.</a></p>
+      {#if practicalAdvice[selected.id].school.length}
+        <div class="quick-group">
+          <strong>Po stronie szkoły {practicalAdvice[selected.id].google.length ? 'lub innych systemów' : ''}</strong>
+          <ul class="todo-list">
+            {#each practicalAdvice[selected.id].school as step}
+              <li><span class="checkmark" aria-hidden="true"></span><span>{step}</span></li>
+            {/each}
+          </ul>
+        </div>
+      {/if}
+      <p class="proof"><strong>Co zachować jako potwierdzenie?</strong> {practicalAdvice[selected.id].proof}</p>
     </div>
-    {#if selected.point===17}
-      <div class="section"><strong>Bezpłatne materiały edukacyjne Google</strong><p><a href="https://safety.google/intl/pl/" target="_blank" rel="noopener noreferrer">Google Safety Center ↗</a> · <a href="https://edu.google.com/learning-center/" target="_blank" rel="noopener noreferrer">Learning Center ↗</a> · <a href="https://beinternetawesome.withgoogle.com/educators" target="_blank" rel="noopener noreferrer">Be Internet Awesome ↗</a></p></div>
+    {#if matchedFeatures(selected).length}
+      <div class="section">
+        <h3>Funkcje Google i konkretne instrukcje</h3>
+        <div class="feature-links">
+          {#each matchedFeatures(selected) as feature}
+            <div class="feature-link">
+              <strong>{feature.title}</strong>
+              <small>{tierLabel[feature.tier]}</small>
+              <a href={feature.link} target="_blank" rel="noopener noreferrer">Instrukcja konfiguracji ↗</a>
+            </div>
+          {/each}
+        </div>
+      </div>
     {/if}
-    <div class="section"><h3>Co musi zrobić szkoła?</h3><p>{selected.schoolAction}</p><h3>Przykładowy dowód wdrożenia</h3><p>{selected.evidence}</p><div class="limitation"><h3>O czym warto pamiętać?</h3><p>{selected.limit}</p><h3>Co zrobić w tej sytuacji?</h3><p>{selected.resolution}</p></div></div>
+    {#if selected.point===10}
+      <section class="backup-workarounds" aria-label="Warianty tworzenia kopii zapasowych z pomocą Google">
+        <h3>Trzy sposoby na rozpoczęcie tworzenia kopii</h3>
+        <div class="backup-grid">
+          <article>
+            <span>START · eksporter Workspace</span>
+            <h4>Eksport i kopia offline</h4>
+            <p>Uruchom pełny eksport w konsoli administratora, pobierz archiwum, zapisz je na zaszyfrowanym odłączanym nośniku i przechowuj w oddzielnym, zabezpieczonym miejscu.</p>
+            <a href="https://knowledge.workspace.google.com/admin/migrate/export-all-your-organizations-data" target="_blank" rel="noopener noreferrer">Jak uruchomić eksport ↗</a>
+          </article>
+          <article>
+            <span>ROZSZERZENIE · Google Cloud</span>
+            <h4>Chronione archiwum w Cloud Storage</h4>
+            <p>Wydziel zasób Cloud Storage z osobnymi uprawnieniami. Rozważ retencję, soft delete i ochronę przed usunięciem. To usługa wymagająca konfiguracji i zwykle płatna.</p>
+            <a href="https://docs.cloud.google.com/storage/docs/protection-backup-recovery-overview" target="_blank" rel="noopener noreferrer">Mechanizmy ochrony Cloud Storage ↗</a>
+          </article>
+          <article>
+            <span>DOCELOWO · wdrożenie z partnerem</span>
+            <h4>Regularny backup i odzyskiwanie</h4>
+            <p>Partner pomoże dobrać narzędzie do cyklicznych kopii danych, ustalić separację dostępów oraz przećwiczyć przywracanie plików lub usług.</p>
+            <a href="#partnerzy">Kontakty partnerów Google for Education ↓</a>
+          </article>
+        </div>
+        <p class="backup-caution"><strong>Ważne:</strong> eksport Workspace nie jest automatycznym backupem i nie gwarantuje szybkiego przywrócenia usług. W standardowym eksporcie dane na tymczasowym zasobie Google są usuwane po 60 dniach od rozpoczęcia eksportu, dlatego trzeba je pobrać. Vault ani historia wersji na Dysku nie zastępują kopii odseparowanych. O spełnieniu wymagania decydują również rzeczywista separacja i test odzyskiwania.</p>
+      </section>
+    {/if}
+    {#if selected.point===17}
+      <div class="section"><strong>Bezpłatne materiały do szkolenia</strong><p><a href="https://safety.google/intl/pl/" target="_blank" rel="noopener noreferrer">Google Safety Center ↗</a> · <a href="https://edu.google.com/learning-center/" target="_blank" rel="noopener noreferrer">Google Learning Center ↗</a></p></div>
+    {/if}
+    <details class="fineprint">
+      <summary>Co jeszcze warto wiedzieć?</summary>
+      <p><strong>Granica działania Google:</strong> {selected.limit}</p>
+      <p><strong>Dokumentacja:</strong> {selected.evidence}</p>
+    </details>
+    <p class="partner-help">Potrzebujesz pomocy we wdrożeniu? <a href="#partnerzy">Skontaktuj się z Partnerem Google for Education</a>.</p>
     <div class="evaluate"><label for="requirement-status">Stan realizacji w naszej szkole</label>
      <select id="requirement-status" value={answers['annex:'+selected.id]||'unknown'} onchange={(e)=>updateAnswer('annex:'+selected.id,e.currentTarget.value)}>
       <option value="unknown">Nie sprawdzono</option><option value="todo">Wymaga działania</option><option value="done">Wdrożone i zweryfikowane</option><option value="na">Nie dotyczy (wymaga uzasadnienia)</option>
@@ -115,4 +166,35 @@
 .feature-item .edition{font-weight:700;color:#225d9e;font-size:12px;display:block;margin-top:5px}
 .feature-item p{margin:9px 0 5px;font-size:13px;line-height:1.55}
 .feature-item a{font-size:12px}
+
+.quick-actions{background:#f8fbff;border:1px solid #dae7f8;border-radius:16px;padding:20px;margin:17px 0}
+.quick-actions h3{font-size:18px;margin:0 0 18px;color:#202124}
+.quick-group+.quick-group{margin-top:17px}
+.quick-group>strong{color:#2154a4;font-size:14px}
+.todo-list{list-style:none;padding:0;margin:10px 0;display:flex;flex-direction:column;gap:11px}
+.todo-list li{display:flex;align-items:flex-start;gap:11px;margin:0;color:#26364c;line-height:1.5;font-size:14px}
+.checkmark{display:inline-block;width:17px;height:17px;border:2px solid #4c83d6;border-radius:5px;flex:none;margin-top:3px;background:#fff}
+.proof{padding:12px 15px;margin:17px 0 0!important;background:#e9f5ec;border-radius:10px;color:#28543c!important;font-size:13px}
+.feature-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:11px;margin:11px 0}
+.feature-link{border:1px solid #e0e7ee;background:#fff;border-radius:11px;padding:14px;display:flex;flex-direction:column;gap:8px}
+.feature-link strong{font-size:13px;color:#29394f;line-height:1.4}
+.feature-link small{color:#60758b;font-size:11px}
+.feature-link a{font-size:12px}
+.fineprint{border:1px solid #e2e9f1;border-radius:10px;padding:12px 15px;margin:18px 0}
+.fineprint summary{cursor:pointer;font-weight:650;color:#4c5b70}
+.fineprint p{font-size:13px}
+.partner-help{font-size:13px;background:#f1f7ff;border-radius:10px;padding:13px 15px}
+.partner-help a{font-weight:700}
+
+
+.backup-workarounds{padding:19px;background:#f1f7ff;border:1px solid #d8e6f6;border-radius:16px;margin:20px 0}
+.backup-workarounds>h3{font-size:17px;margin:0 0 15px}
+.backup-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.backup-grid article{border:1px solid #dce6f3;background:#fff;padding:17px;border-radius:13px;display:flex;flex-direction:column;gap:10px}
+.backup-grid article>span{font-size:10px;letter-spacing:.06em;font-weight:800;color:#1e5ca7}
+.backup-grid h4{margin:0;font-size:15px;color:#24364d}
+.backup-grid p{font-size:13px;margin:0;line-height:1.55}
+.backup-grid a{font-size:12px;font-weight:700;margin-top:auto}
+.backup-caution{font-size:12px;line-height:1.55;background:#fff9ec;color:#624b28!important;border-left:3px solid #f9ab00;padding:12px 14px;border-radius:8px;margin:16px 0 0!important}
+@media(max-width:1030px){.backup-grid{grid-template-columns:1fr}}
 </style>

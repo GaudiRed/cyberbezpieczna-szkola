@@ -23,7 +23,13 @@ test('Matryca KSC wyszukuje wymaganie, zapisuje status i zachowuje wynik po odś
   await expect(page.locator('.matrix .list button')).toHaveCount(18);
   await page.locator('.matrix .list button').filter({ hasText: 'Pkt 10' }).click();
   await expect(page.getByRole('heading', { name: 'Odseparowane kopie zapasowe' })).toBeVisible();
-  await expect(page.getByText('Google Vault i Historia wersji')).toBeVisible();
+  await expect(page.locator('.matrix .backup-workarounds')).toBeVisible();
+  await expect(page.locator('.matrix .backup-workarounds article')).toHaveCount(3);
+  await expect(page.locator('.backup-workarounds')).toContainText('Eksport i kopia offline');
+  await expect(page.locator('.backup-workarounds')).toContainText('Cloud Storage');
+  await expect(page.locator('.backup-workarounds')).toContainText('Regularny backup');
+  await expect(page.locator('.backup-workarounds')).toContainText('60 dniach');
+  await expect(page.locator('.backup-workarounds a[href="https://knowledge.workspace.google.com/admin/migrate/export-all-your-organizations-data"]')).toHaveCount(1);
   await page.locator('#requirement-status').selectOption('todo');
   await page.screenshot({ path: testInfo.outputPath('wymaganie-10.png'), fullPage: true });
   await page.reload();
@@ -81,8 +87,8 @@ test('Raport do PDF zawiera wymagania KSC i funkcje Google bez elementów nawiga
   await expect(page.locator('.print-source')).toContainText('Cyberbezpieczna szkoła z Google for Education');
   await expect(page.locator('.print-source')).toContainText('Data i godzina wydruku:');
   await expect(page.locator('.print-source')).toContainText(new URL(page.url()).origin);
-  await expect(page.locator('.audit .print-report')).toContainText('Co zrobić w tej sytuacji:');
-  await expect(page.locator('.audit .print-report')).toContainText('oddzielne kopie zapasowe');
+  await expect(page.locator('.audit .print-report')).toContainText('Po stronie szkoły:');
+  await expect(page.locator('.audit .print-report')).toContainText('zaszyfrowanym nośniku odłączanym od komputera');
   const pdf = await page.pdf({ path: testInfo.outputPath('przykladowy-raport.pdf'), format: 'A4', printBackground: true, preferCSSPageSize: true });
   expect(pdf.byteLength).toBeGreaterThan(10_000);
 });
@@ -106,22 +112,23 @@ test('Logo Google for Education ma poprawny wariant na komputerze i telefonie', 
 });
 
 
-test('Ograniczenie w matrycy KSC nigdy nie pozostaje bez praktycznej odpowiedzi', async ({ page }) => {
+test('Wszystkie 18 wymagań KSC ma krótką listę konkretnych działań', async ({ page }) => {
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await expect(page.locator('.shell')).toHaveAttribute('data-hydrated', 'true');
   await page.getByRole('navigation').getByRole('button', { name: '18 wymagań KSC' }).click();
-  const list = page.locator('.matrix .list button');
-  await expect(list).toHaveCount(18);
-  for (let n = 1; n <= 18; n++) {
-    await list.filter({ hasText: new RegExp('Pkt ' + n + '(\\D|$)') }).click();
-    const solution = page.locator('.matrix .details .limitation');
-    await expect(solution).toContainText('Co zrobić w tej sytuacji?');
-    await expect(solution.locator('p')).toHaveCount(2);
-    const resolution = await solution.locator('p').last().innerText();
-    expect(resolution.trim().length).toBeGreaterThan(65);
+  const items = page.locator('.matrix .list button');
+  await expect(items).toHaveCount(18);
+  for (let n=0; n<18; n++){
+    await items.nth(n).click();
+    const checklist=page.locator('.matrix .quick-actions');
+    await expect(checklist).toContainText('Co zrobić? Krótka lista');
+    expect(await checklist.locator('.todo-list li').count()).toBeGreaterThan(0);
+    expect(await checklist.locator('.todo-list li').count()).toBeLessThanOrEqual(4);
+    await expect(checklist).toContainText('Co zachować jako potwierdzenie?');
   }
-  await list.filter({ hasText: /Pkt 1(?!\d)/ }).click();
-  await expect(page.locator('.matrix .details .limitation')).toContainText('Zrób jeden spis wszystkich urządzeń i usług szkoły');
+  await items.first().click();
+  await expect(page.locator('.matrix .quick-actions')).toContainText('Sprawdź listę kont i administratorów');
+  await expect(page.locator('.matrix .partner-help')).toContainText('Partnerem Google for Education');
 });
 
 test('Favicon Google oraz kontakty czterech partnerów są dostępne na komputerze i telefonie', async ({ page }) => {
@@ -143,27 +150,34 @@ test('Favicon Google oraz kontakty czterech partnerów są dostępne na komputer
   expect(overflow).toBeLessThanOrEqual(2);
 });
 
-test('Porady Google są krótkie, jasne i prowadzą do partnerów', async ({ page }) => {
+test('Funkcje mają konkretne kroki, poprawny odnośnik i pomoc partnera', async ({ page }) => {
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   await expect(page.locator('.shell')).toHaveAttribute('data-hydrated', 'true');
-  await page.getByRole('navigation').getByRole('button', { name: '18 wymagań KSC' }).click();
-  await expect(page.locator('.matrix .feature-list .feature-item').first()).toBeVisible();
-  await expect(page.locator('.matrix .google-support')).toContainText(/funkcje Google/i);
-  await expect(page.locator('.matrix .google-support')).toContainText('Skontaktuj się z wybranym Partnerem Google for Education.');
-  await expect(page.locator('.matrix .google-support a[href="#partnerzy"]')).toHaveCount(1);
-
   await page.getByRole('navigation').getByRole('button', { name: 'Zabezpieczenia' }).click();
-  await expect(page.locator('.catalog .detail')).toContainText('Co daje szkole?');
-  await expect(page.locator('.catalog .detail')).toContainText('Nie wiesz, jak uruchomić tę funkcję?');
-  await expect(page.locator('.catalog .detail ol')).toHaveCount(0);
-  await expect(page.locator('.catalog .detail a[href="#partnerzy"]')).toHaveCount(1);
-  await page.locator('.catalog .detail a[href="#partnerzy"]').click();
-  await expect(page).toHaveURL(/#partnerzy$/);
-
+  const cards=page.locator('.catalog .entries button');
+  await expect(cards).toHaveCount(11);
+  for (let n=0; n<11; n++){
+    await cards.nth(n).click();
+    const steps=page.locator('.catalog .detail .feature-actions li');
+    expect(await steps.count()).toBeGreaterThan(0);
+    expect(await steps.count()).toBeLessThanOrEqual(3);
+    const href=await page.getByRole('link', {name:'Otwórz instrukcję konfiguracji Google'}).getAttribute('href');
+    expect(['support.google.com', 'knowledge.workspace.google.com']).toContain(new URL(href!).hostname);
+  }
+  await expect(page.locator('.catalog .detail .partner-advice')).toContainText('Partnera Google for Education');
   await page.getByRole('navigation').getByRole('button', { name: 'Autodiagnoza' }).click();
-  await expect(page.locator('.audit .screen-only')).toContainText('Skontaktuj się z Partnerem Google for Education.');
   await page.emulateMedia({ media: 'print' });
-  await expect(page.locator('.audit .print-report')).toContainText('Kontakty partnerów Google for Education:');
-  await expect(page.locator('.audit .print-report')).toContainText('Co daje szkole:');
-  await expect(page.locator('.audit .print-report')).not.toContainText('Co sprawdzić lub wykonać:');
+  await expect(page.locator('.audit .print-report')).toContainText('Co włączyć lub sprawdzić:');
+});
+
+test('Nagłówek partnerów nie rozrywa frazy Google for Education', async ({ page }) => {
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  const section=page.locator('#partnerzy .intro');
+  await expect(section.getByRole('heading', {name:/Masz pytania/})).toBeVisible();
+  await expect(section.locator('.keep-together')).toHaveCount(2);
+  for (const text of await section.locator('.keep-together').all()){
+    await expect(text).toHaveCSS('white-space','nowrap');
+  }
+  const overflowing=await page.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
+  expect(overflowing).toBeLessThanOrEqual(2);
 });
