@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import { features, type Feature } from '$lib/content';
   import { annexRequirements, LEGAL_SOURCE, matchedFeatures } from '$lib/requirements';
+  import { practicalAdvice } from '$lib/practicalAdvice';
 
   export let answers: Record<string, string> = {};
   export let updateAnswer: (id: string, status: string) => void;
@@ -115,11 +116,18 @@
     {#each legalOpen as requirement, i (requirement.id)}
       <article class="report-entry">
         <h3>{i+1}. Załącznik nr 4, cz. I pkt {requirement.point}: {requirement.title} <small>({labels[requirement.state]})</small></h3>
-        <p><strong>Co należy sprawdzić:</strong> {requirement.schoolAction}</p>
-        <p><strong>Potwierdzenie realizacji:</strong> {requirement.evidence}</p>
-        <p><strong>Wsparcie Google:</strong> {matchedFeatures(requirement).length ? matchedFeatures(requirement).map((item)=>item.title).join(', ') : 'Niezależne działania szkoły lub inne narzędzia'}</p>
-        <p><strong>Ograniczenie:</strong> {requirement.limit}</p>
-        <p class="remedy"><strong>Co zrobić w tej sytuacji:</strong> {requirement.resolution}</p>
+        {#if practicalAdvice[requirement.id].google.length}
+          <p><strong>W Google for Education:</strong></p>
+          <ul class="short-actions">{#each practicalAdvice[requirement.id].google as step}<li>{step}</li>{/each}</ul>
+        {/if}
+        {#if practicalAdvice[requirement.id].school.length}
+          <p><strong>Po stronie szkoły:</strong></p>
+          <ul class="short-actions">{#each practicalAdvice[requirement.id].school as step}<li>{step}</li>{/each}</ul>
+        {/if}
+        <p><strong>Potwierdzenie wykonania:</strong> {practicalAdvice[requirement.id].proof}</p>
+        {#each matchedFeatures(requirement) as feature}
+          <p class="doc-url">{feature.title}: {feature.link}</p>
+        {/each}
         <p><strong>Źródło prawa:</strong> {LEGAL_SOURCE} (załącznik nr 4, część I, pkt {requirement.point})</p>
         <p><strong>Osoba odpowiedzialna:</strong> ........................................ <strong>Termin:</strong> ...........................</p>
       </article>
@@ -139,8 +147,10 @@
           <p><strong>Ryzyko:</strong> {feature.risk}</p>
           <p><strong>Dostępność:</strong> {tierLabels[feature.tier]}</p>
           <p><strong>Powiązanie z przepisami:</strong> {feature.legal}</p>
+          <p><strong>Co włączyć lub sprawdzić:</strong></p>
+          <ul class="short-actions">{#each feature.steps as step}<li>{step}</li>{/each}</ul>
           <p><strong>Co daje szkole:</strong> {feature.help}</p>
-          <p><strong>Informacje Google:</strong> {feature.link}</p>
+          <p class="doc-url"><strong>Instrukcja konfiguracji Google:</strong> {feature.link}</p>
           <p><strong>Pomoc z konfiguracją:</strong> skontaktuj się z wybranym Partnerem Google for Education.</p>
           <p><strong>Osoba odpowiedzialna:</strong> ................................................................</p>
           <p><strong>Termin:</strong> ................................................</p>
@@ -189,7 +199,9 @@
     .report-entry{border-bottom:1px solid #aaa;padding:12px 0;break-inside:avoid}
     .print-source{border:1px solid #d8e5f5;background:#f5f9ff;border-radius:8px;padding:8px 13px;margin-top:14px}
     .print-source p{margin:2px 0;font-size:11px;color:#202124}
-    .report-entry .remedy{background:#f1f8f4;border-left:3px solid #34a853;padding:7px 10px}
+    .report-entry .short-actions{margin:5px 0 10px;padding-left:19px}
+    .report-entry .short-actions li{margin:4px 0;font-size:11px}
+    .report-entry .doc-url{font-size:10px;overflow-wrap:anywhere;margin:3px 0}
     .print-warning{font-size:10px;padding:12px;border:1px solid #777;margin-top:25px}
   }
 </style>
