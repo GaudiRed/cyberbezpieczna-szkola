@@ -80,3 +80,21 @@ test('Raport do PDF zawiera wymagania KSC i funkcje Google bez elementów nawiga
   const pdf = await page.pdf({ path: testInfo.outputPath('przykladowy-raport.pdf'), format: 'A4', printBackground: true, preferCSSPageSize: true });
   expect(pdf.byteLength).toBeGreaterThan(10_000);
 });
+
+
+test('Logo Google for Education ma poprawny wariant na komputerze i telefonie', async ({ page }, testInfo) => {
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('.shell')).toHaveAttribute('data-hydrated', 'true');
+  const logo = page.locator('.gfe-identity img[alt="Google for Education"]');
+  await expect(logo).toBeVisible();
+  await expect.poll(() => logo.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0)).toBe(true);
+  const src = await logo.evaluate((img: HTMLImageElement) => img.currentSrc);
+  if (testInfo.project.name.includes('mobile')) {
+    expect(src).toContain('logo-google-for-education-vertical.png');
+  } else {
+    expect(src).toContain('logo-google-for-education.png');
+  }
+  const horizontalOverflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+  expect(horizontalOverflow).toBeLessThanOrEqual(2);
+  await page.screenshot({ path: testInfo.outputPath('logo-google-for-education.png'), fullPage: false });
+});
