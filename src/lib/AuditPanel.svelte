@@ -1,5 +1,6 @@
 <script lang="ts">
   import { features, type Feature } from '$lib/content';
+  import { annexRequirements, LEGAL_SOURCE, matchedFeatures } from '$lib/requirements';
 
   export let answers: Record<string, string> = {};
   export let updateAnswer: (id: string, status: string) => void;
@@ -26,6 +27,9 @@
   $: todoCount = list.filter((feature) => feature.state === 'todo').length;
   $: unknownCount = list.filter((feature) => feature.state === 'unknown').length;
   $: naCount = list.filter((feature) => feature.state === 'na').length;
+  $: legalItems = annexRequirements.map((requirement) => ({...requirement,state:answers['annex:'+requirement.id] || 'unknown'}));
+  $: legalOpen = legalItems.filter((requirement) => requirement.state === 'unknown' || requirement.state === 'todo');
+  $: legalDone = legalItems.filter((requirement) => requirement.state === 'done').length;
 </script>
 
 <section class="audit">
@@ -41,7 +45,9 @@
       <div><strong>{naCount}</strong><span>Nie dotyczy</span></div>
     </div>
 
-    <h2>Ocena poszczególnych zabezpieczeń</h2>
+    <div class="legal-summary"><strong>Wymagania KSC, załącznik nr 4</strong><p>Przeanalizowano {legalDone} z {annexRequirements.length} punktów. Do sprawdzenia lub realizacji pozostaje {legalOpen.length}. Oceny wymagań wykonuje się w zakładce „18 wymagań KSC”.</p><small>Ocena dotyczy sytuacji właściwych podmiotów; status „nie dotyczy” wymaga uzasadnienia.</small></div>
+
+    <h2>Ocena poszczególnych zabezpieczeń Google</h2>
     <div class="checklist">
       {#each list as feature (feature.id)}
         <div class="checkrow">
@@ -77,7 +83,24 @@
     <h2>Podsumowanie odpowiedzi</h2>
     <p>Wdrożone i sprawdzone: <strong>{doneCount}</strong> · Wymaga działania: <strong>{todoCount}</strong> · Nie sprawdzono: <strong>{unknownCount}</strong> · Nie dotyczy: <strong>{naCount}</strong></p>
 
-    <h2>Plan sprawdzenia i działań</h2>
+    <h2>Część A. Realizacja wymagań KSC, załącznik nr 4</h2>
+    <p>Ocenione jako wdrożone: <strong>{legalDone}</strong> / {annexRequirements.length}. Do sprawdzenia lub działania: <strong>{legalOpen.length}</strong>. Ocena dotyczy wyłącznie zakresu załącznika nr 4, część I, gdy ma on zastosowanie do szkoły.</p>
+    {#each legalOpen as requirement, i (requirement.id)}
+      <article class="report-entry">
+        <h3>{i+1}. Załącznik nr 4, cz. I pkt {requirement.point}: {requirement.title} <small>({labels[requirement.state]})</small></h3>
+        <p><strong>Co należy sprawdzić:</strong> {requirement.schoolAction}</p>
+        <p><strong>Potwierdzenie realizacji:</strong> {requirement.evidence}</p>
+        <p><strong>Wsparcie Google:</strong> {matchedFeatures(requirement).length ? matchedFeatures(requirement).map((item)=>item.title).join(', ') : 'Niezależne działania szkoły lub inne narzędzia'}</p>
+        <p><strong>Ograniczenia:</strong> {requirement.limit}</p>
+        <p><strong>Źródło prawa:</strong> {LEGAL_SOURCE} (załącznik nr 4, część I, pkt {requirement.point})</p>
+        <p><strong>Osoba odpowiedzialna:</strong> ........................................ <strong>Termin:</strong> ...........................</p>
+      </article>
+    {/each}
+    <h3>Wymagania KSC oznaczone jako wykonane lub niedotyczące</h3>
+    {#each legalItems.filter((item)=>item.state==='done'||item.state==='na') as requirement (requirement.id)}
+      <p>Załącznik nr 4, pkt {requirement.point}: {requirement.title}, {labels[requirement.state]}.</p>
+    {/each}
+    <h2>Część B. Plan sprawdzenia i działań dotyczących funkcji Google</h2>
     {#if outstanding.length === 0}
       <p>Wszystkie pozycje oznaczono jako wdrożone lub nie mające zastosowania. Weryfikuj regularnie skuteczność zabezpieczeń.</p>
     {:else}
@@ -122,6 +145,8 @@
   .actions{margin-top:22px}.primary{padding:13px 18px;border-radius:9px;border:0;background:#1c5ebd;color:#fff;font-weight:700;cursor:pointer}
   .disclaimer{font-size:13px}.visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
   .print-report{display:none}
+  .legal-summary{background:#eaf2ff;padding:18px;border-radius:12px;margin-top:24px;border-left:4px solid #2368bf}
+  .legal-summary p{margin:7px 0}.legal-summary small{color:#64748b}
   @media(max-width:700px){.stats{grid-template-columns:repeat(2,1fr)}.checkrow{flex-direction:column;align-items:stretch}select{width:100%}}
   @media print{
     .screen-only{display:none!important}.print-report{display:block!important;color:#111;background:#fff}
