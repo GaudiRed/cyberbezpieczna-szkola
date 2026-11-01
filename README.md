@@ -40,6 +40,12 @@ npm run preview
 
 Repozytorium zawiera workflow `.github/workflows/validate.yml` do kontroli typów i kompilacji w GitHub Actions. **Workflow niczego publicznie nie publikuje.**
 
+## Publiczny podgląd
+
+Przygotowano ręcznie uruchamiany workflow `.github/workflows/publish-pages.yml`. Pozwala on opublikować statyczną aplikację w GitHub Pages po skonfigurowaniu repozytorium przez właściciela. Rutynowe zapisy do `main` nie publikują automatycznie nowych wersji, dzięki czemu treści wymagające aktualizacji mogą zostać sprawdzone przed udostępnieniem.
+
+[Instrukcja krok po kroku](docs/PUBLIKACJA_GITHUB_PAGES.md).
+
 ## Publikacja
 
 Projekt jest przygotowany pod GitHub Pages (statyczny SvelteKit, ścieżka bazowa `/cyberbezpieczna-szkola`, plik `static/.nojekyll`). Wersję demonstracyjną można rozwijać i testować bez opinii prawnika. Przed przedstawieniem jako oficjalne stanowisko Google/MEN trzeba zweryfikować źródła, status licencji, legalne użycie marki i uzyskać właściwe zatwierdzenia. Nie należy reklamować aplikacji jako certyfikatora zgodności z prawem.
