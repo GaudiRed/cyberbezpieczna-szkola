@@ -22,6 +22,15 @@ npm run check
 npm run dev
 ```
 
+Automatyczne testy interfejsu (komputer, emulacja telefonu, quiz, autodiagnoza, raport do PDF):
+
+```bash
+npx playwright install chromium
+npm run test:e2e
+```
+
+W GitHub Actions scenariusze przeglądarkowe uruchamiają się po poprawnej kompilacji. Zrzuty ekranu, raport Playwright i przykładowy PDF są przechowywane jako **prywatne artefakty testów**, a nie jako publiczna strona.
+
 Kompilacja wersji statycznej:
 
 ```bash
