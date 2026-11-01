@@ -120,7 +120,7 @@ test('Ograniczenie w matrycy KSC nigdy nie pozostaje bez praktycznej odpowiedzi'
     const resolution = await solution.locator('p').last().innerText();
     expect(resolution.trim().length).toBeGreaterThan(65);
   }
-  await list.filter({ hasText: /^Pkt 1(?:\s|$)/ }).click();
+  await list.filter({ hasText: /Pkt 1(?!\d)/ }).click();
   await expect(page.locator('.matrix .details .limitation')).toContainText('Arkuszach Google');
 });
 
