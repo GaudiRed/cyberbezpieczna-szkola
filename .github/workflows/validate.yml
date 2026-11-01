@@ -31,3 +31,31 @@ jobs:
           name: cyberbezpieczna-szkola-build
           path: build/
           if-no-files-found: error
+
+  browser-tests:
+    name: Interfejs i PDF (Chromium)
+    needs: quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Pobierz repozytorium
+        uses: actions/checkout@v4
+      - name: Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Instalacja zależności
+        run: npm install --no-audit --no-fund
+      - name: Instalacja przeglądarki
+        run: npx playwright install --with-deps chromium
+      - name: Testy desktop, telefon i widok PDF
+        run: npm run test:e2e
+      - name: Zapisz raport testów i zrzuty ekranu (bez publikacji strony)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: testy-wizualne-i-pdf
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: warn
