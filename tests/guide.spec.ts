@@ -202,7 +202,7 @@ test('Szkoła ma wykonalny plan oparty o Google także tam, gdzie samo Google ni
     await list.nth(item.point-1).click();
     const bridge=page.locator('.matrix .google-bridge');
     await expect(bridge).toContainText(item.title);
-    await expect(bridge).toContainText('Co jeszcze jest potrzebne:');
+    await expect(bridge).toContainText('Co wymaga dodatkowej analizy:');
     await expect(bridge.locator('a')).toHaveAttribute('href',/^https:\/\//);
   }
 });
