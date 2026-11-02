@@ -42,7 +42,7 @@
  </div>
 </header>
 <nav aria-label="Nawigacja główna">
-<button class:current={tab==='start'} onclick={()=>tab='start'}>Start</button><button class:current={tab==='law'} onclick={()=>tab='law'}>Moje obowiązki</button><button class:current={tab==='matrix'} onclick={()=>tab='matrix'}>18 wymagań KSC</button><button class:current={tab==='features'} onclick={()=>tab='features'}>Zabezpieczenia</button><button class:current={tab==='check'} onclick={()=>tab='check'}>Autodiagnoza</button><button class:current={tab==='quiz'} onclick={()=>tab='quiz'}>Quiz</button><button class:current={tab==='resources'} onclick={()=>tab='resources'}>Źródła i kursy</button><a class="nav-partners" href="#partnerzy">Partnerzy</a>
+<button class:current={tab==='start'} onclick={()=>tab='start'}>Start</button><button class:current={tab==='law'} onclick={()=>tab='law'}>Moje obowiązki</button><button class:current={tab==='matrix'} onclick={()=>tab='matrix'}>18 wymagań KSC</button><button class:current={tab==='features'} onclick={()=>tab='features'}>Zabezpieczenia</button><button class:current={tab==='check'} onclick={()=>tab='check'}>Autodiagnoza</button><button class:current={tab==='quiz'} onclick={()=>tab='quiz'}>Quiz</button><button class:current={tab==='resources'} onclick={()=>tab='resources'}>Źródła i kursy</button><a class="nav-partners" href="#partnerzy">Partnerzy</a><a class="nav-guide-download" href={`${base}/publikacje/cyberbezpieczna-szkola.pdf`} download>Pobierz poradnik PDF ↓</a>
 </nav>
 <main>
 {#if tab==='start'}
@@ -56,7 +56,7 @@
    <span><span class="mini-dot blue"></span> 11 funkcji Google</span>
    <span><span class="mini-dot yellow"></span> Praktyczna autodiagnoza</span>
   </div>
-  <div class="actions"><button class="primary" onclick={()=>tab='matrix'}>Poznaj wymagania KSC →</button><button class="secondary" onclick={()=>tab='check'}>Sprawdź swoją szkołę</button></div>
+  <div class="actions"><button class="primary" onclick={()=>tab='matrix'}>Poznaj wymagania KSC →</button><button class="secondary" onclick={()=>tab='check'}>Sprawdź swoją szkołę</button><a class="secondary download-guide" href={`${base}/publikacje/cyberbezpieczna-szkola.pdf`} download><span aria-hidden="true">↓</span> Pobierz poradnik PDF</a></div>
  </div>
  <div class="hero-visual"><SecurityArtwork /></div>
 </section>
@@ -184,6 +184,11 @@ nav .nav-partners:focus-visible{outline:3px solid #4285f4;outline-offset:3px}
 .partner-advice strong{color:#194e92;font-size:14px}
 .partner-advice p{font-size:13px;margin:8px 0;line-height:1.55}
 .partner-advice a{font-size:13px}
+.nav-guide-download{display:inline-flex;align-items:center;flex:none;white-space:nowrap;background:#e8f0fe;color:#174ea6!important;border-radius:100px;text-decoration:none;font-size:13px;font-weight:700;padding:11px 18px}
+.nav-guide-download:hover{background:#d9e8ff}
+.nav-guide-download:focus-visible,.download-guide:focus-visible{outline:3px solid #4285f4;outline-offset:3px}
+.download-guide{display:inline-flex;align-items:center;justify-content:center;gap:7px;text-decoration:none!important}
+@media(max-width:720px){.download-guide{width:100%}}
 .feature-actions{padding-left:21px;line-height:1.6;list-style:square}
 .feature-actions li{margin:0 0 9px;color:#26364a;font-size:14px}
 </style>
