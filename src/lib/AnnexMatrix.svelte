@@ -94,51 +94,50 @@
     </div>
     {#if matchedFeatures(selected).length}
       <div class="section">
-        <h3>Funkcje Google i konkretne instrukcje</h3>
+        <h3>Funkcje Google i aktualna dokumentacja</h3>
         <div class="feature-links">
           {#each matchedFeatures(selected) as feature}
             <div class="feature-link">
               <strong>{feature.title}</strong>
               <small>{tierLabel[feature.tier]}</small>
-              <a href={feature.link} target="_blank" rel="noopener noreferrer">Instrukcja konfiguracji ↗</a>
+              <a href={feature.link} target="_blank" rel="noopener noreferrer">Dokumentacja Google ↗</a>
             </div>
           {/each}
         </div>
       </div>
     {/if}
     {#if selected.point===10}
-      <section class="backup-workarounds" aria-label="Warianty tworzenia kopii zapasowych z pomocą Google">
-        <h3>Jak zacząć z Google? Trzy warianty</h3>
+      <section class="backup-workarounds" aria-label="Możliwości wsparcia tworzenia kopii zapasowych">
+        <h3>Jak Google może wesprzeć tworzenie kopii?</h3>
         <div class="backup-grid">
           <article>
-            <span>WARIANT MINIMUM · WORKSPACE</span>
-            <h4>Eksport + kopia odłączona od sieci</h4>
-            <p>Administrator uruchamia pełny eksport organizacji. Po zakończeniu pobiera archiwum i zapisuje je na szyfrowanym nośniku przechowywanym osobno. Niezbędny jest też test otwarcia kopii.</p>
-            <a href="https://knowledge.workspace.google.com/admin/migrate/export-all-your-organizations-data" target="_blank" rel="noopener noreferrer">Instrukcja Google Data Export ↗</a>
+            <span>GOOGLE WORKSPACE</span>
+            <h4>Eksport danych organizacji</h4>
+            <p>Google Workspace udostępnia narzędzie eksportowania danych. Zakres i sposób wykonania kopii należy dobrać do potrzeb szkoły, pamiętając, że sam eksport nie zapewnia regularnego backupu.</p>
+            <a href="https://knowledge.workspace.google.com/admin/migrate/export-all-your-organizations-data" target="_blank" rel="noopener noreferrer">Aktualna dokumentacja Google ↗</a>
           </article>
           <article>
-            <span>ROZSZERZENIE · GOOGLE CLOUD</span>
-            <h4>Odrębne archiwum w Cloud Storage</h4>
-            <p>Pobrane archiwum można zapisać w osobnym projekcie Cloud Storage z oddzielnymi uprawnieniami i retencją. Sam inny zasobnik nie dowodzi jednak separacji fizycznej i logicznej.</p>
-            <a href="https://docs.cloud.google.com/storage/docs/protection-backup-recovery-overview" target="_blank" rel="noopener noreferrer">Ochrona danych w Cloud Storage ↗</a>
+            <span>GOOGLE CLOUD</span>
+            <h4>Osobne miejsce przechowywania kopii</h4>
+            <p>Google Cloud Storage może służyć do przechowywania archiwów. Wymaga to oceny separacji, dostępu, kosztów i sposobu odzyskiwania danych.</p>
+            <a href="https://docs.cloud.google.com/storage/docs/protection-backup-recovery-overview" target="_blank" rel="noopener noreferrer">Możliwości ochrony w Cloud Storage ↗</a>
           </article>
           <article>
-            <span>DOCELOWO · STAŁA OCHRONA</span>
-            <h4>Regularne kopie i łatwe odtwarzanie</h4>
-            <p>Gdy pliki zmieniają się codziennie, wdroż odrębny system automatycznych kopii i testów odtwarzania. Partner Google for Education pomoże dobrać zakres i sposób separacji.</p>
-            <a href="#partnerzy">Kontakt z partnerem ↗</a>
+            <span>ROZWIĄZANIE DOPASOWANE DO SZKOŁY</span>
+            <h4>Regularny backup i test odtworzenia</h4>
+            <p>Szkoła powinna objąć kopiami odpowiednie dane oraz systemy spoza Google. Częstotliwość i sposób separacji warto ustalić po analizie środowiska z administratorem lub partnerem.</p>
+            <a href="#partnerzy">Porozmawiaj z partnerem ↗</a>
           </article>
         </div>
-        <p class="backup-caution"><strong>Granice rozwiązania:</strong> pełny eksport standardowej edycji Workspace można uruchamiać co 30 dni, a tymczasowe archiwum Google jest usuwane po 60 dniach od rozpoczęcia eksportu. Eksport nie jest backupem ciągłym ani automatycznym przywracaniem usług. Własny zasobnik eksportu jest funkcją zależną od dodatkowych licencji Assured Controls; bez nich archiwum pobiera się z zasobnika tymczasowego i przenosi osobno. <a href="https://knowledge.workspace.google.com/admin/migrate/choose-the-workspace-data-you-want-to-export" target="_blank" rel="noopener noreferrer">Szczegóły edycji i limitów ↗</a></p>
-        <p class="backup-law"><strong>Jak rozumieć separację?</strong> Ministerstwo Cyfryzacji (FAQ, pyt. 3.41) wyjaśnia, że nie ma ogólnego obowiązku trzymania kopii w osobnym budynku. Muszą one być zabezpieczone przed tymi samymi zagrożeniami co dane produkcyjne, z zachowaniem separacji logicznej i fizycznej. <a href="https://www.gov.pl/attachment/c19a078f-60ca-49ab-ac19-f743f8f64903#page=76" target="_blank" rel="noopener noreferrer">Odpowiedź Ministerstwa Cyfryzacji ↗</a></p>
+        <p class="backup-caution"><strong>Ważne:</strong> Dysk Google, historia wersji i Vault nie stanowią samodzielnie kompletnego rozwiązania backupowego. Dostępność funkcji eksportu i warunki usług mogą się zmieniać, dlatego szczegóły należy sprawdzać w aktualnej dokumentacji. Żaden z wariantów nie potwierdza automatycznie spełnienia wymagań KSC.</p>
       </section>
     {:else if googleBridges[selected.id]}
-      <section class="google-bridge" aria-label="Prosty wariant z użyciem Google">
-        <div class="bridge-tag">Prosty wariant z Google</div>
+      <section class="google-bridge" aria-label="Pomocnicze rozwiązanie Google">
+        <div class="bridge-tag">Pomocne narzędzie Google</div>
         <h3>{googleBridges[selected.id].title}</h3>
-        <p><strong>Co zrobić w Google:</strong> {googleBridges[selected.id].use}</p>
-        <p><strong>Co jeszcze jest potrzebne:</strong> {googleBridges[selected.id].outside}</p>
-        <a href={googleBridges[selected.id].guideUrl} target="_blank" rel="noopener noreferrer">{googleBridges[selected.id].guide} ↗</a>
+        <p><strong>Możliwe zastosowanie:</strong> {googleBridges[selected.id].use}</p>
+        <p><strong>Co wymaga dodatkowej analizy:</strong> {googleBridges[selected.id].outside}</p>
+        <a href={googleBridges[selected.id].guideUrl} target="_blank" rel="noopener noreferrer">Dokumentacja i wskazówki ↗</a>
       </section>
     {/if}
     {#if selected.point===17}
@@ -149,7 +148,7 @@
       <p><strong>Granica działania Google:</strong> {selected.limit}</p>
       <p><strong>Dokumentacja:</strong> {selected.evidence}</p>
     </details>
-    <p class="partner-help">Potrzebujesz pomocy we wdrożeniu? <a href="#partnerzy">Skontaktuj się z Partnerem Google for Education</a>.</p>
+    <p class="partner-help"><strong>Każde środowisko szkolne jest inne.</strong> Wybór i zakres zabezpieczeń należy dopasować do wykorzystywanych systemów oraz potrzeb placówki. Potrzebujesz pomocy we wdrożeniu? <a href="#partnerzy">Skontaktuj się z Partnerem Google for Education</a>.</p>
     <div class="evaluate"><label for="requirement-status">Stan realizacji w naszej szkole</label>
      <select id="requirement-status" value={answers['annex:'+selected.id]||'unknown'} onchange={(e)=>updateAnswer('annex:'+selected.id,e.currentTarget.value)}>
       <option value="unknown">Nie sprawdzono</option><option value="todo">Wymaga działania</option><option value="done">Wdrożone i zweryfikowane</option><option value="na">Nie dotyczy (wymaga uzasadnienia)</option>
