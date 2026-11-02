@@ -34,6 +34,16 @@ jobs:
         run: npm run check
       - name: Zbuduj statyczną stronę
         run: npm run build
+      - name: Zainstaluj Chromium do tworzenia PDF
+        run: npx playwright install --with-deps chromium
+      - name: Wygeneruj poradnik PDF z treści witryny
+        run: |
+          npm run preview -- --host 127.0.0.1 --port 4173 > /tmp/cyber-preview.log 2>&1 &
+          for i in $(seq 1 45); do
+            if curl -fsS http://127.0.0.1:4173/cyberbezpieczna-szkola/poradnik-pdf/ > /dev/null; then break; fi
+            sleep 2
+          done
+          node scripts/build-guide-pdf.mjs
       - name: Przygotuj GitHub Pages
         uses: actions/configure-pages@v5
       - name: Prześlij pliki strony
