@@ -25,6 +25,14 @@
     upgrade: 'ChromeOS Education Upgrade',
     public: 'Bezpłatne materiały'
   };
+  function downloadGuide() {
+    const anchor = document.createElement('a');
+    anchor.href = `${base}/publikacje/cyberbezpieczna-szkola.pdf`;
+    anchor.download = 'cyberbezpieczna-szkola.pdf';
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+  }
   const issueDate = new Intl.DateTimeFormat('pl-PL', {dateStyle:'long',timeZone:'Europe/Warsaw'}).format(new Date());
 </script>
 
@@ -36,7 +44,7 @@
 <div class="print-guide">
   <div class="guide-toolbar">
     <a href={`${base}/`}>← Powrót do poradnika</a>
-    <a class="toolbar-download" href={`${base}/publikacje/cyberbezpieczna-szkola.pdf`} download>Pobierz gotowy PDF ↓</a>
+    <button class="toolbar-download" onclick={downloadGuide}>Pobierz gotowy PDF ↓</button>
   </div>
 
   <article class="pdf-page cover">
