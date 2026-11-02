@@ -19,6 +19,14 @@
  $: shown=features.filter(f=>(filter==='all'||f.tier===filter)&&[f.title,f.risk,f.category].join(' ').toLocaleLowerCase('pl').includes(search.toLocaleLowerCase('pl')));
  $: if (shown.length > 0 && !shown.some((feature) => feature.id === active.id)) active = shown[0];
  function answer(id:string,v:string){answers={...answers,[id]:v};try{localStorage.setItem('cyber-guide-checks',JSON.stringify(answers))}catch{}}
+ function downloadGuide() {
+  const anchor = document.createElement('a');
+  anchor.href = `${base}/publikacje/cyberbezpieczna-szkola.pdf`;
+  anchor.download = 'cyberbezpieczna-szkola.pdf';
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
+ }
 </script>
 <svelte:head><title>Cyberbezpieczna szkoła | Interaktywny poradnik</title><meta name="description" content="Interaktywny przewodnik po zabezpieczeniach szkoły i rozwiązaniach Google for Education."/></svelte:head>
 <div class="shell" data-hydrated={hydrated}>
@@ -42,7 +50,7 @@
  </div>
 </header>
 <nav aria-label="Nawigacja główna">
-<button class:current={tab==='start'} onclick={()=>tab='start'}>Start</button><button class:current={tab==='law'} onclick={()=>tab='law'}>Moje obowiązki</button><button class:current={tab==='matrix'} onclick={()=>tab='matrix'}>18 wymagań KSC</button><button class:current={tab==='features'} onclick={()=>tab='features'}>Zabezpieczenia</button><button class:current={tab==='check'} onclick={()=>tab='check'}>Autodiagnoza</button><button class:current={tab==='quiz'} onclick={()=>tab='quiz'}>Quiz</button><button class:current={tab==='resources'} onclick={()=>tab='resources'}>Źródła i kursy</button><a class="nav-partners" href="#partnerzy">Partnerzy</a><a class="nav-guide-download" href={`${base}/publikacje/cyberbezpieczna-szkola.pdf`} download>Pobierz poradnik PDF ↓</a>
+<button class:current={tab==='start'} onclick={()=>tab='start'}>Start</button><button class:current={tab==='law'} onclick={()=>tab='law'}>Moje obowiązki</button><button class:current={tab==='matrix'} onclick={()=>tab='matrix'}>18 wymagań KSC</button><button class:current={tab==='features'} onclick={()=>tab='features'}>Zabezpieczenia</button><button class:current={tab==='check'} onclick={()=>tab='check'}>Autodiagnoza</button><button class:current={tab==='quiz'} onclick={()=>tab='quiz'}>Quiz</button><button class:current={tab==='resources'} onclick={()=>tab='resources'}>Źródła i kursy</button><a class="nav-partners" href="#partnerzy">Partnerzy</a><button class="nav-guide-download" onclick={downloadGuide}>Pobierz poradnik PDF ↓</button>
 </nav>
 <main>
 {#if tab==='start'}
@@ -56,7 +64,7 @@
    <span><span class="mini-dot blue"></span> 11 funkcji Google</span>
    <span><span class="mini-dot yellow"></span> Praktyczna autodiagnoza</span>
   </div>
-  <div class="actions"><button class="primary" onclick={()=>tab='matrix'}>Poznaj wymagania KSC →</button><button class="secondary" onclick={()=>tab='check'}>Sprawdź swoją szkołę</button><a class="secondary download-guide" href={`${base}/publikacje/cyberbezpieczna-szkola.pdf`} download><span aria-hidden="true">↓</span> Pobierz poradnik PDF</a></div>
+  <div class="actions"><button class="primary" onclick={()=>tab='matrix'}>Poznaj wymagania KSC →</button><button class="secondary" onclick={()=>tab='check'}>Sprawdź swoją szkołę</button><button class="secondary download-guide" onclick={downloadGuide}><span aria-hidden="true">↓</span> Pobierz poradnik PDF</button></div>
  </div>
  <div class="hero-visual"><SecurityArtwork /></div>
 </section>
