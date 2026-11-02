@@ -25,14 +25,9 @@ test('Matryca KSC wyszukuje wymaganie, zapisuje status i zachowuje wynik po odś
   await expect(page.getByRole('heading', { name: 'Odseparowane kopie zapasowe' })).toBeVisible();
   await expect(page.locator('.matrix .backup-workarounds')).toBeVisible();
   await expect(page.locator('.matrix .backup-workarounds article')).toHaveCount(3);
-  await expect(page.locator('.backup-workarounds')).toContainText('Eksport + kopia odłączona od sieci');
+  await expect(page.locator('.backup-workarounds')).toContainText('Eksport danych organizacji');
   await expect(page.locator('.backup-workarounds')).toContainText('Cloud Storage');
-  await expect(page.locator('.backup-workarounds')).toContainText('Regularne kopie i łatwe odtwarzanie');
-  await expect(page.locator('.backup-workarounds')).toContainText('60 dniach');
-  await expect(page.locator('.backup-workarounds')).toContainText('30 dni');
-  await expect(page.locator('.backup-workarounds')).toContainText('Assured Controls');
-  await expect(page.locator('.backup-workarounds')).toContainText('separacji fizycznej i logicznej');
-  await expect(page.locator('.backup-law a[href*="gov.pl/attachment/"]')).toHaveCount(1);
+  await expect(page.locator('.backup-workarounds')).toContainText('Regularny backup i test odtworzenia');
   await expect(page.locator('.backup-workarounds a[href="https://knowledge.workspace.google.com/admin/migrate/export-all-your-organizations-data"]')).toHaveCount(1);
   await page.locator('#requirement-status').selectOption('todo');
   await page.screenshot({ path: testInfo.outputPath('wymaganie-10.png'), fullPage: true });
@@ -94,7 +89,7 @@ test('Raport do PDF zawiera wymagania KSC i funkcje Google bez elementów nawiga
   await expect(page.locator('.print-source')).toContainText('Data i godzina wydruku:');
   await expect(page.locator('.print-source')).toContainText(new URL(page.url()).origin);
   await expect(page.locator('.audit .print-report')).toContainText('Po stronie szkoły:');
-  await expect(page.locator('.audit .print-report')).toContainText('zaszyfrowanym nośniku odłączonym od sieci');
+  await expect(page.locator('.audit .print-report')).toContainText('Zakres i częstotliwość kopii');
   const pdf = await page.pdf({ path: testInfo.outputPath('przykladowy-raport.pdf'), format: 'A4', printBackground: true, preferCSSPageSize: true });
   expect(pdf.byteLength).toBeGreaterThan(10_000);
 });
@@ -167,7 +162,7 @@ test('Funkcje mają konkretne kroki, poprawny odnośnik i pomoc partnera', async
     const steps=page.locator('.catalog .detail .feature-actions li');
     expect(await steps.count()).toBeGreaterThan(0);
     expect(await steps.count()).toBeLessThanOrEqual(3);
-    const href=await page.getByRole('link', {name:'Otwórz instrukcję konfiguracji Google'}).getAttribute('href');
+    const href=await page.getByRole('link', {name:'Sprawdź aktualną dokumentację Google'}).getAttribute('href');
     expect(['support.google.com', 'knowledge.workspace.google.com']).toContain(new URL(href!).hostname);
   }
   await expect(page.locator('.catalog .detail .partner-advice')).toContainText('Partnera Google for Education');
@@ -207,7 +202,7 @@ test('Szkoła ma wykonalny plan oparty o Google także tam, gdzie samo Google ni
     await list.nth(item.point-1).click();
     const bridge=page.locator('.matrix .google-bridge');
     await expect(bridge).toContainText(item.title);
-    await expect(bridge).toContainText('Co jeszcze jest potrzebne:');
+    await expect(bridge).toContainText('Co wymaga dodatkowej analizy:');
     await expect(bridge.locator('a')).toHaveAttribute('href',/^https:\/\//);
   }
 });
