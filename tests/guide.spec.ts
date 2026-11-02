@@ -211,3 +211,16 @@ test('Szkoła ma wykonalny plan oparty o Google także tam, gdzie samo Google ni
     await expect(bridge.locator('a')).toHaveAttribute('href',/^https:\/\//);
   }
 });
+
+
+test('Poradnik A4 zawiera 18 wymagan, 11 funkcji i logo Google', async ({ page }) => {
+  await page.goto('./poradnik-pdf/', { waitUntil: 'domcontentloaded' });
+  await expect(page.getByRole('heading', {name:/Cyberbezpieczna/}).first()).toBeVisible();
+  await expect(page.locator('.req-card')).toHaveCount(18);
+  await expect(page.locator('.feature-card')).toHaveCount(11);
+  await expect(page.locator('.partner-entry')).toHaveCount(4);
+  await expect(page.locator('.cover .brand-logo')).toBeVisible();
+  await expect.poll(() => page.locator('.cover .brand-logo').evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0)).toBe(true);
+  await expect(page.locator('.backup-page')).toContainText('Eksport danych Workspace');
+  await expect(page.getByRole('link',{name:'Pobierz gotowy PDF'})).toHaveAttribute('download','');
+});
