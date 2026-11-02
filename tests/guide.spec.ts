@@ -221,6 +221,6 @@ test('Poradnik A4 zawiera 18 wymagan, 11 funkcji i logo Google', async ({ page }
   await expect(page.locator('.partner-entry')).toHaveCount(4);
   await expect(page.locator('.cover .brand-logo')).toBeVisible();
   await expect.poll(() => page.locator('.cover .brand-logo').evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0)).toBe(true);
-  await expect(page.locator('.backup-page')).toContainText('Eksport danych Workspace');
+  await expect(page.locator('.backup-page')).toContainText('eksport danych Workspace');
   await expect(page.getByRole('button',{name:'Pobierz gotowy PDF'})).toBeVisible();
 });
