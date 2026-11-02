@@ -129,7 +129,7 @@
         {#if requirement.id==='ksc10'}
           <p><strong>Instrukcja Google Data Export:</strong> https://knowledge.workspace.google.com/admin/migrate/export-all-your-organizations-data</p>
           <p><strong>Jak rozumieć odseparowanie kopii:</strong> https://www.gov.pl/attachment/c19a078f-60ca-49ab-ac19-f743f8f64903 (FAQ, odpowiedź 3.41)</p>
-          <p><strong>Ważne:</strong> w standardowych edycjach pełny eksport nie częściej niż co 30 dni. Kopie zmieniających się codziennie danych wymagają częstszego, niezależnego backupu.</p>
+          <p><strong>Ważne:</strong> eksport, Vault i historia wersji nie stanowią samodzielnie pełnego backupu. Zakres i częstotliwość kopii oraz możliwość odtworzenia wymagają analizy środowiska szkoły i aktualnych warunków usług.</p>
         {:else if googleBridges[requirement.id]}
           <p><strong>Praktyczne wsparcie Google:</strong> {googleBridges[requirement.id].title}</p>
           <p class="doc-url"><strong>Instrukcja:</strong> {googleBridges[requirement.id].guideUrl}</p>
@@ -147,7 +147,7 @@
       <p>Załącznik nr 4, pkt {requirement.point}: {requirement.title}, {labels[requirement.state]}.</p>
     {/each}
     <h2>Część B. Funkcje Google, które warto sprawdzić</h2>
-    <p>Poniższe funkcje mogą pomóc szkole. Weryfikacja dostępności i ustawień powinna odbyć się z administratorem lub Partnerem Google for Education.</p>
+    <p>Poniższe funkcje mogą pomóc szkole. Zastosowanie funkcji zależy od edycji, infrastruktury i potrzeb placówki. Warto przeprowadzić indywidualną analizę z administratorem lub Partnerem Google for Education.</p>
     {#if outstanding.length === 0}
       <p>Wszystkie pozycje oznaczono jako wdrożone lub nie mające zastosowania. Weryfikuj regularnie skuteczność zabezpieczeń.</p>
     {:else}
