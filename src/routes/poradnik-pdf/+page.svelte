@@ -71,14 +71,14 @@
     <div class="mini-header"><span class="mini-pills"><i></i><i></i><i></i><i></i></span><span>Cyberbezpieczna szkoła / Jak korzystać</span></div>
     <p class="section-kicker">NA POCZĄTEK</p>
     <h2 class="page-title">Jak korzystać z poradnika?</h2>
-    <p class="page-lead">To gotowy punkt startowy do rozmowy o bezpieczeństwie szkoły. Każdy obszar zawiera krótką listę czynności oraz wskazówkę, jak potwierdzić ich wykonanie.</p>
+    <p class="page-lead">To praktyczny punkt startowy do rozmowy o bezpieczeństwie szkoły. Każdy obszar zawiera działania do rozważenia oraz wskazówkę, jak potwierdzić ich wykonanie.</p>
     <div class="step-cards">
       <div class="step-card blue"><b>01</b><h3>Sprawdź wymaganie</h3><p>Ustal, które działania dotyczą Twojej placówki, uwzględniając jej formę organizacyjną.</p></div>
       <div class="step-card green"><b>02</b><h3>Włącz zabezpieczenia</h3><p>Skorzystaj z podanych funkcji Google i wykonaj czynności po stronie szkoły.</p></div>
       <div class="step-card yellow"><b>03</b><h3>Potwierdź działanie</h3><p>Zachowaj wskazane dowody wdrożenia, sprawdź wyniki i wyznacz kolejny przegląd.</p></div>
     </div>
     <div class="paper-note">
-      <strong>Zakres dokumentu</strong>
+      <strong>Zakres dokumentu i indywidualna analiza</strong><p>Każda szkoła ma inne potrzeby i środowisko technologiczne. Przedstawione działania są punktem wyjścia. Ich zakres należy dobrać po indywidualnej analizie infrastruktury, używanych usług i obowiązujących wymagań. Pomoc we wdrożeniu mogą zapewnić Partnerzy Google for Education.</p>
       <p>Przedstawiamy 18 podstawowych punktów części I załącznika nr 4 do nowelizacji KSC oraz przykładowe zabezpieczenia Google. Materiał nie zastępuje analizy statusu prawnego placówki ani kompletnej dokumentacji bezpieczeństwa. Korzystanie z Google samo w sobie nie oznacza spełnienia wymogów ustawowych.</p>
       <p>Niektóre funkcje wymagają płatnej edycji Google Workspace lub dodatkowej licencji. Weryfikuj dostępność przed wdrożeniem.</p>
     </div>
@@ -130,7 +130,7 @@
       <div class="mini-header"><span class="mini-pills"><i></i><i></i><i></i><i></i></span><span>Google Workspace for Education / ChromeOS</span></div>
       <p class="section-kicker">CZĘŚĆ 02 · NARZĘDZIA GOOGLE</p>
       <h2 class="page-title">Zabezpieczenia, które możesz wdrożyć</h2>
-      <p class="page-lead compact">Dostępność funkcji zależy od edycji produktu i konfiguracji szkoły. Linki prowadzą do instrukcji technicznych Google.</p>
+      <p class="page-lead compact">Dostępność funkcji zależy od edycji i środowiska szkoły. Linki prowadzą do aktualnej dokumentacji Google, a wskazówki nie zastępują indywidualnej analizy.</p>
       <div class="features-list">
         {#each pageItems as f (f.id)}
           <article class="feature-card">
@@ -149,11 +149,11 @@
     <div class="mini-header"><span class="mini-pills"><i></i><i></i><i></i><i></i></span><span>Kopie zapasowe / praktyczny plan</span></div>
     <p class="section-kicker">CZĘŚĆ 03 · ODSEPAROWANE KOPIE</p>
     <h2 class="page-title">Kopie zapasowe: od czego zacząć?</h2>
-    <p class="page-lead">Przy punkcie 10 KSC Google może wesprzeć szkołę, ale sam Dysk Google, synchronizacja i Vault nie zastępują niezależnego backupu.</p>
-    <div class="backup-option blue"><div class="backup-num">01</div><div><h3>Wariant podstawowy: eksport danych Workspace</h3><p>Administrator eksportuje dane organizacji, pobiera archiwum i zapisuje je na szyfrowanym nośniku odłączonym od sieci. Ustala osobę odpowiedzialną oraz sposób przechowywania.</p><a href="https://knowledge.workspace.google.com/admin/migrate/export-all-your-organizations-data">Oficjalna instrukcja Google Data Export ↗</a></div></div>
-    <div class="backup-option green"><div class="backup-num">02</div><div><h3>Odseparowane archiwum w Google Cloud</h3><p>Archiwa mogą być przechowywane w osobnym zasobie Cloud Storage z ograniczonymi uprawnieniami i retencją. Trzeba dodatkowo ocenić separację kopii i koszty.</p><a href="https://docs.cloud.google.com/storage/docs/protection-backup-recovery-overview">Dokumentacja ochrony danych Cloud Storage ↗</a></div></div>
-    <div class="backup-option yellow"><div class="backup-num">03</div><div><h3>Regularny backup z pomocą partnera</h3><p>Jeżeli szkoła potrzebuje codziennego odzyskiwania plików, warto wdrożyć niezależne rozwiązanie backupowe, objąć nim także systemy spoza Google i regularnie testować przywracanie.</p><a href="https://cyber.hubedu.pl/#partnerzy">Kontakty partnerów Google for Education ↗</a></div></div>
-    <div class="paper-note backup-note"><strong>Ważne ograniczenia</strong><p>Standardowe pełne eksporty Google Workspace mają ograniczenie częstotliwości do 30 dni, a tymczasowe archiwa są usuwane po 60 dniach. Eksport nie jest kopią ciągłą ani narzędziem do automatycznego odtwarzania. Sprawdź aktualne warunki i wymagania oddzielenia kopii, zanim wybierzesz rozwiązanie.</p></div>
+    <p class="page-lead">Google Workspace może pomóc w eksporcie danych, a Google Cloud w przechowywaniu archiwów. Zakres, separację i częstotliwość kopii trzeba dopasować do środowiska szkoły.</p>
+    <div class="backup-option blue"><div class="backup-num">01</div><div><h3>Wariant podstawowy: eksport danych Workspace</h3><p>Google Workspace umożliwia eksportowanie danych organizacji. Należy ustalić, czy eksport obejmuje odpowiedni zakres, gdzie będzie przechowywany i jak zostanie sprawdzona możliwość odzyskania danych.</p><a href="https://knowledge.workspace.google.com/admin/migrate/export-all-your-organizations-data">Oficjalna instrukcja Google Data Export ↗</a></div></div>
+    <div class="backup-option green"><div class="backup-num">02</div><div><h3>Odseparowane archiwum w Google Cloud</h3><p>Google Cloud Storage może wspierać przechowywanie odrębnych archiwów. Wymaga to analizy zasad dostępu, separacji, kosztów i odzyskiwania.</p><a href="https://docs.cloud.google.com/storage/docs/protection-backup-recovery-overview">Dokumentacja ochrony danych Cloud Storage ↗</a></div></div>
+    <div class="backup-option yellow"><div class="backup-num">03</div><div><h3>Regularny backup z pomocą partnera</h3><p>Szkoła powinna ocenić częstotliwość potrzebnych kopii, pozostałe systemy oraz sposób testowania odtwarzania. W doborze rozwiązania może pomóc administrator lub partner.</p><a href="https://cyber.hubedu.pl/#partnerzy">Kontakty partnerów Google for Education ↗</a></div></div>
+    <div class="paper-note backup-note"><strong>Ważne ograniczenia</strong><p>Sam eksport, historia wersji i Google Vault nie zastępują pełnego systemu kopii zapasowych. Szczegółowe warunki usług i dostępność funkcji mogą się zmieniać. Dobór metody wymaga sprawdzenia aktualnej dokumentacji i indywidualnej analizy środowiska szkoły.</p></div>
   </section>
 
   <section class="pdf-page partners-page">
