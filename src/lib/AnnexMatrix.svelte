@@ -92,6 +92,26 @@
       {/if}
       <p class="proof"><strong>Co zachować jako potwierdzenie?</strong> {practicalAdvice[selected.id].proof}</p>
     </div>
+    {#if selected.point===1 || selected.point===2 || selected.point===3 || selected.point===4 || selected.point===13}
+      <div class="section">
+        <h3>Sprawdź w dokumentacji Google</h3>
+        {#if selected.point===1}
+          <p><a href="https://support.google.com/chrome/a/answer/9286924?hl=en" target="_blank" rel="noopener noreferrer">Jak wyeksportować listę zarządzanych przeglądarek, wersji i rozszerzeń z Chrome Enterprise Core ↗</a></p>
+          <p class="small">Ta lista obejmuje zarejestrowane przeglądarki i ich informacje techniczne, nie cały sprzęt i wszystkie programy szkoły.</p>
+        {:else if selected.point===2}
+          <p><a href="https://support.google.com/chrome/a/answer/10025748?hl=en" target="_blank" rel="noopener noreferrer">Raport wersji przeglądarek Chrome i ChromeOS ↗</a></p>
+        {:else if selected.point===3}
+          <p><a href="https://workspace.google.com/learn-more/security/security-whitepaper/asset-protection/" target="_blank" rel="noopener noreferrer">Google Workspace Security Whitepaper, mechanizmy ochrony danych ↗</a></p>
+          <p class="small">Dokumentacja dostawcy stanowi materiał wejściowy. Szkoła powinna też udokumentować własną konfigurację i odpowiedzialności.</p>
+        {:else if selected.point===4}
+          <p><a href="https://support.google.com/a/answer/7281227?hl=en" target="_blank" rel="noopener noreferrer">Kontrola dostępu aplikacji zewnętrznych do danych Workspace (OAuth) ↗</a></p>
+          <p class="small">Logowanie przez Google nie oznacza automatycznego przeglądu uprawnień w każdej aplikacji zewnętrznej.</p>
+        {:else if selected.point===13}
+          <p><a href="https://workspace.google.com/learn-more/security/security-whitepaper/asset-protection/" target="_blank" rel="noopener noreferrer">Ochrona przed phishingiem i malware w Gmail, dokumentacja Google ↗</a></p>
+          <p class="small">Podawany przez Google poziom blokowania ponad 99,9% zagrożeń dotyczy Gmail, nie wszystkich urządzeń i usług w szkole.</p>
+        {/if}
+      </div>
+    {/if}
     {#if matchedFeatures(selected).length}
       <div class="section">
         <h3>Funkcje Google i aktualna dokumentacja</h3>
