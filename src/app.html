@@ -4,18 +4,102 @@
     <meta charset="utf-8" />
     <link rel="icon" type="image/x-icon" href="https://www.google.com/favicon.ico" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-G42YHHS3GM"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-G42YHHS3GM');
-    </script>
+    <style>
+      #privacy-consent { position:fixed; bottom:16px; left:50%; transform:translateX(-50%); z-index:10000; width:min(680px,calc(100% - 28px)); padding:22px; background:#fff; color:#202124; border:1px solid #dfe5ed; box-shadow:0 14px 45px rgba(25,45,85,.22); border-radius:18px; font-family:Arial,Roboto,system-ui,sans-serif; font-size:14px; line-height:1.55; }
+      #privacy-consent[hidden], #privacy-settings[hidden] { display:none !important; }
+      #privacy-consent h2 { margin:0 0 7px; font-size:19px; line-height:1.3; }
+      #privacy-consent p { margin:0 0 14px; color:#4c5565; }
+      #privacy-consent .privacy-buttons { display:flex; flex-wrap:wrap; gap:10px; }
+      #privacy-consent button { flex:1; min-width:155px; border-radius:999px; border:1px solid #1967d2; padding:11px 16px; font:600 14px Arial,Roboto,system-ui,sans-serif; cursor:pointer; }
+      #privacy-accept { background:#1967d2; color:#fff; }
+      #privacy-reject { background:#fff; color:#1967d2; }
+      #privacy-settings { position:fixed; right:14px; bottom:14px; z-index:9999; border:1px solid #cad5e5; background:#fff; color:#32445d; padding:9px 14px; border-radius:999px; font:600 12px Arial,Roboto,system-ui,sans-serif; cursor:pointer; box-shadow:0 2px 12px rgba(25,45,85,.13); }
+      #privacy-consent button:focus-visible,#privacy-settings:focus-visible { outline:3px solid #4285f4; outline-offset:3px; }
+      @media(max-width:500px) { #privacy-consent { bottom:8px; padding:18px; } #privacy-consent button { min-width:100%; } }
+      @media print { #privacy-consent,#privacy-settings { display:none !important; } }
+    </style>
     %sveltekit.head%
   </head>
   <body data-sveltekit-preload-data="hover">
     <div style="display:contents">%sveltekit.body%</div>
+    <section id="privacy-consent" role="dialog" aria-label="Zgoda na analitykę" aria-describedby="privacy-description" hidden>
+      <h2>Twoja prywatność</h2>
+      <p id="privacy-description">Korzystamy z niezbędnego zapisu lokalnego, aby zapamiętać Twoją decyzję. Za Twoją zgodą uruchomimy Google Analytics, który pomoże nam poznać liczbę odwiedzin i sposób korzystania z poradnika. Usługa może zapisywać analityczne pliki cookie i przekazywać dane do Google. Odmowa nie ogranicza dostępu do strony. Zgodę możesz w każdej chwili zmienić przyciskiem „Ustawienia prywatności”.</p>
+      <div class="privacy-buttons">
+        <button id="privacy-reject" type="button">Odrzuć analitykę</button>
+        <button id="privacy-accept" type="button">Akceptuję analitykę</button>
+      </div>
+    </section>
+    <button id="privacy-settings" type="button" hidden>Ustawienia prywatności</button>
+    <script>
+      (function () {
+        var storageKey = 'cyber-guide-analytics-consent-v1';
+        var measurementId = 'G-G42YHHS3GM';
+        var panel = document.getElementById('privacy-consent');
+        var settings = document.getElementById('privacy-settings');
+        var accept = document.getElementById('privacy-accept');
+        var reject = document.getElementById('privacy-reject');
+        var analyticsLoaded = false;
+        var decision = null;
+        try { decision = localStorage.getItem(storageKey); } catch (error) { /* Storage may be disabled. */ }
+
+        function startAnalytics() {
+          if (analyticsLoaded) return;
+          analyticsLoaded = true;
+          window.dataLayer = window.dataLayer || [];
+          window.gtag = function () { window.dataLayer.push(arguments); };
+          window.gtag('js', new Date());
+          window.gtag('config', measurementId);
+          var script = document.createElement('script');
+          script.async = true;
+          script.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(measurementId);
+          document.head.appendChild(script);
+        }
+
+        function showPanel() {
+          panel.hidden = false;
+          settings.hidden = true;
+        }
+
+        function hidePanel() {
+          panel.hidden = true;
+          settings.hidden = false;
+        }
+
+        function removeAnalyticsCookies() {
+          document.cookie.split(';').forEach(function (entry) {
+            var name = entry.trim().split('=')[0];
+            if (!/^_ga(?:_|$)/.test(name)) return;
+            var host = location.hostname;
+            var domains = [''];
+            var pieces = host.split('.');
+            for (var i = 0; i < pieces.length - 1; i++) domains.push('; domain=.' + pieces.slice(i).join('.'));
+            domains.forEach(function (domain) {
+              document.cookie = name + '=; Max-Age=0; path=/' + domain + '; SameSite=Lax';
+            });
+          });
+        }
+
+        function saveDecision(value) {
+          var previouslyActive = analyticsLoaded;
+          decision = value;
+          try { localStorage.setItem(storageKey, value); } catch (error) { /* Consent remains session-only. */ }
+          if (value === 'accepted') startAnalytics();
+          else {
+            removeAnalyticsCookies();
+            // Reload to stop any previously loaded Google Analytics script after withdrawal.
+            if (previouslyActive) { location.reload(); return; }
+          }
+          hidePanel();
+        }
+
+        accept.addEventListener('click', function () { saveDecision('accepted'); });
+        reject.addEventListener('click', function () { saveDecision('rejected'); });
+        settings.addEventListener('click', showPanel);
+        if (decision === 'accepted') { startAnalytics(); hidePanel(); }
+        else if (decision === 'rejected') hidePanel();
+        else showPanel();
+      })();
+    </script>
   </body>
 </html>
