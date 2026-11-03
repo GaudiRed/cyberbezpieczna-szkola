@@ -12,11 +12,11 @@ export type GoogleBridge = {
 };
 export const googleBridges: Record<string, GoogleBridge> = {
   ksc01: {
-    title: 'Rejestr sprzętu i usług w Arkuszach Google',
-    use: 'Jeden chroniony Arkusz: nazwa zasobu, numer, system, miejsce, odpowiedzialny, data przeglądu. Eksportuj dane zarządzanych kont i Chromebooków z konsoli.',
-    outside: 'Pozostałe komputery, sieć i usługi trzeba wpisać ręcznie lub importować z używanego systemu inwentaryzacyjnego.',
-    guide: 'Arkusze Google, udostępnianie i uprawnienia',
-    guideUrl: 'https://support.google.com/docs/answer/2494822?hl=pl'
+    title: 'Jedna inwentaryzacja ICT, kilka źródeł danych',
+    use: 'Prowadź chroniony rejestr zasobów w Arkuszach Google. Połącz wykaz kont i zarządzanych Chromebooków z informacjami o zarejestrowanych przeglądarkach Chrome Enterprise Core, takich jak wersje i rozszerzenia.',
+    outside: 'Chrome Enterprise Core pokazuje zarządzane przeglądarki, nie pełną inwentaryzację komputerów. Osobno zinwentaryzuj drukarki, sieć, systemy lokalne i usługi zewnętrzne. Dobór metody automatyzacji warto uzgodnić z administratorem lub partnerem.',
+    guide: 'Google: zarządzanie przeglądarkami Chrome',
+    guideUrl: 'https://support.google.com/chrome/a/answer/2941083?hl=pl'
   },
   ksc11: {
     title: 'Kalendarz Google + protokół w Arkuszach',
